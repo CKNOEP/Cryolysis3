@@ -1,0 +1,16 @@
+-Keep logic and GUI elements seperate, and only update GUI elements when out-of-combat so as to prevent 
+"Interface Action Failed Due to an Addon" messages.
+
+-Configuration should be saved by character
+
+-Cryolysis3.lua should only have OnEnable(), OnInitialize(), and OnDisable() (and possibly module loading/LOD functions)
+
+Folder Breakdown...
+/classes/	Integrated class modules.
+/core/		Core functions that provide frameworks for other bits to interface with.
+/data/		Files and functions relevant to data collecting or storing.
+/modules/	Integrated modules (stuff from Cryo2 mainly).
+/textures/	Skins.	
+
+To-do:
+Split locales to match folder structure (one file for each class/module)

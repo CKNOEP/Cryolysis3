@@ -1,0 +1,945 @@
+------------------------------------------------------------------------
+r105 | belazor | 2008-12-07 15:22:22 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   A /tags/v3.0-beta13 (from /trunk:104)
+
+Tagging as v3.0-beta13
+------------------------------------------------------------------------
+r104 | Belazor | 2008-12-07 15:21:30 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+   M /trunk/data/privates.lua
+
+- The :GetHighestRank() and .cacheList builder functions now no longer need their own duplicated Water/Food/Mana Gem tables.
+------------------------------------------------------------------------
+r103 | Belazor | 2008-12-07 14:42:48 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Added two non-mana costing Mage talents to inclusion list.
+------------------------------------------------------------------------
+r101 | Belazor | 2008-12-07 13:46:11 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Possible fix for Dalaran Intellect.
+------------------------------------------------------------------------
+r100 | Belazor | 2008-12-07 13:43:26 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Workaround for LPT apparently not being able to parse WoWHead's Talents section (Mage Edition).
+------------------------------------------------------------------------
+r99 | Belazor | 2008-12-07 13:32:39 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Maybe fix item caching for high levels.
+------------------------------------------------------------------------
+r98 | Belazor | 2008-12-07 13:26:46 +0000 (Sun, 07 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/data/spellcache.lua
+
+Remove some redundant code.
+------------------------------------------------------------------------
+r97 | Belazor | 2008-12-07 13:24:19 +0000 (Sun, 07 Dec 2008) | 2 lines
+Changed paths:
+   M /trunk/data/spellcache.lua
+
+- Remove redundant Paladin blessings from :HasSpell()
+- Added Teleport: Dalaran and Portal: Dalaran to :HasSpell()
+------------------------------------------------------------------------
+r95 | Belazor | 2008-12-06 13:50:23 +0000 (Sat, 06 Dec 2008) | 4 lines
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+   M /trunk/locales/deDE.lua
+   M /trunk/locales/esES.lua
+   M /trunk/locales/frFR.lua
+   M /trunk/locales/koKR.lua
+   M /trunk/locales/ruRU.lua
+   M /trunk/locales/zhCN.lua
+   M /trunk/locales/zhTW.lua
+
+- Fixed locale file error (my bad, not the fault of StingerSoft who did a good job with ruRU - not that I know Russian... =P)
+- Fixed cache problem for good (I swear it works this time)
+- Fixed Sphere tooltip and button text problem
+- Spells will now be cached properly even while in Silent Mode
+------------------------------------------------------------------------
+r93 | Belazor | 2008-12-04 22:19:52 +0000 (Thu, 04 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/core/events.lua
+
+The spell cache will now update when you learn a new spell (through trainer or talent).
+------------------------------------------------------------------------
+r92 | Belazor | 2008-12-04 20:02:44 +0000 (Thu, 04 Dec 2008) | 3 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+   M /trunk/locales/enUS.lua
+
+- Mana Gem cooldown tracker is now functioning.
+- Mana Gem button will now correctly gray out/light up when contents of bag changes.
+- For Mages, the main sphere now has a tooltip similar to Cryolysis2.
+------------------------------------------------------------------------
+r91 | Belazor | 2008-12-04 18:38:16 +0000 (Thu, 04 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Buff Button: Slow Fall now shows Light Feather count.
+------------------------------------------------------------------------
+r90 | StingerSoft | 2008-12-04 18:21:26 +0000 (Thu, 04 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.toc
+   A /trunk/locales/ruRU.lua
+
+added ruRU localization
+------------------------------------------------------------------------
+r88 | Belazor | 2008-11-30 15:36:14 +0000 (Sun, 30 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+- Fixed lv74 and lv80 food/water
+- Added Dalaran Intellect and Dalaran Brilliance
+------------------------------------------------------------------------
+r86 | Belazor | 2008-11-15 23:07:27 +0000 (Sat, 15 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Teleport/Portal: Dalaran support
+------------------------------------------------------------------------
+r85 | Belazor | 2008-11-15 10:38:07 +0000 (Sat, 15 Nov 2008) | 1 line
+Changed paths:
+   A /trunk/classes/deathknight
+   A /trunk/classes/deathknight/deathknight.lua
+   A /trunk/classes/deathknight/locales
+   M /trunk/modules.xml
+
+Rudimentary Death Knight support.
+------------------------------------------------------------------------
+r84 | Belazor | 2008-11-11 10:27:06 +0000 (Tue, 11 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/modules/reagents/reagents.lua
+
+Remove duplicate option generation from reagents.lua
+------------------------------------------------------------------------
+r82 | Belazor | 2008-11-10 18:50:50 +0000 (Mon, 10 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/modules/reagents/reagents.lua
+
+(Hopefully) fix reagent restocking for non-English locales.
+------------------------------------------------------------------------
+r81 | Belazor | 2008-11-08 22:45:41 +0000 (Sat, 08 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Un-local some functions as doing it accidentally broke caching.
+------------------------------------------------------------------------
+r80 | paene | 2008-11-08 07:15:02 +0000 (Sat, 08 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/core/global.lua
+   M /trunk/data/mounts.lua
+
+Fixed another mount button hearthstone bug...srsly, who doesn't carry a hearthstone with them...
+------------------------------------------------------------------------
+r79 | Belazor | 2008-11-07 18:46:00 +0000 (Fri, 07 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Local'd some functions we only use in Cryolysis3.lua
+------------------------------------------------------------------------
+r78 | Belazor | 2008-11-07 12:38:35 +0000 (Fri, 07 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/classes/paladin/paladin.lua
+
+Fix Paladin reagents.
+------------------------------------------------------------------------
+r77 | paene | 2008-11-07 00:58:28 +0000 (Fri, 07 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/classes/druid/druid.lua
+   M /trunk/classes/hunter/hunter.lua
+   M /trunk/classes/paladin/paladin.lua
+   M /trunk/classes/rogue/rogue.lua
+   M /trunk/classes/shaman/shaman.lua
+   M /trunk/classes/warlock/warlock.lua
+   M /trunk/classes/warrior/warrior.lua
+
+Added framework code for item cacheing for unimplemented classes
+------------------------------------------------------------------------
+r75 | paene | 2008-11-07 00:43:04 +0000 (Fri, 07 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Added a nil check to the item cacheing function to allow unimplemented classes to use the mod's core buttons.
+------------------------------------------------------------------------
+r72 | paene | 2008-11-06 05:01:39 +0000 (Thu, 06 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/classes/priest/priest.lua
+
+Fixed last class module initializing and overriding the proper item cache list
+Adjusted item hyperlinks in the item cacheing function to reflect itemstring changes from patch 3.0
+------------------------------------------------------------------------
+r71 | paene | 2008-11-05 23:48:10 +0000 (Wed, 05 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+
+Increased time between cache attempts to 1 second from .5 seconds to address issues for people with higher latencies and to avoid Blizzard blocking cache requests.
+------------------------------------------------------------------------
+r70 | Belazor | 2008-11-01 01:12:22 +0000 (Sat, 01 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Undid previous changes because Lua is too stupid to make table keys order correctly, be they strings or numbers -_-
+------------------------------------------------------------------------
+r69 | Belazor | 2008-10-31 22:11:25 +0000 (Fri, 31 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Make :GetHighestRank work with the result of :GetLookupTable
+------------------------------------------------------------------------
+r68 | Paene | 2008-10-28 15:49:35 +0000 (Tue, 28 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Small tooltip update
+------------------------------------------------------------------------
+r66 | paene | 2008-10-27 07:39:16 +0000 (Mon, 27 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/data/mounts.lua
+   M /trunk/data/tooltips.lua
+   M /trunk/locales/enUS.lua
+
+Fixed an error that occurred when the player didn't have a hearthstone
+------------------------------------------------------------------------
+r65 | paene | 2008-10-26 23:41:17 +0000 (Sun, 26 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+   M /trunk/data/options.lua
+
+Fixed scaling and positioning bugs
+------------------------------------------------------------------------
+r64 | paene | 2008-10-26 08:00:04 +0000 (Sun, 26 Oct 2008) | 5 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/classes/priest/priest.lua
+   M /trunk/core/global.lua
+   M /trunk/data/defaults.lua
+   M /trunk/locales/enUS.lua
+
+Removed skin from the defaults
+Added a function to set the default skin for a class
+Set the default skin for mages and priests
+Did some minor work on the priest module
+Added some locales
+------------------------------------------------------------------------
+r63 | Belazor | 2008-10-24 22:58:38 +0000 (Fri, 24 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/core/global.lua
+
+Undid SV pollution.
+------------------------------------------------------------------------
+r62 | Belazor | 2008-10-24 12:29:12 +0000 (Fri, 24 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Mana Gem cooldown implementation started (not working thus far)
+------------------------------------------------------------------------
+r61 | Belazor | 2008-10-24 11:44:39 +0000 (Fri, 24 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Item Count function is now global.
+Slow Fall now shows Light Feather count.
+------------------------------------------------------------------------
+r59 | paene | 2008-10-22 22:41:07 +0000 (Wed, 22 Oct 2008) | 3 lines
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/data/options.lua
+   M /trunk/data/tooltips.lua
+
+Fixed main sphere scaling slider bug
+Fixed the hide tooltips option (wasn't working before)
+Fixed a bug causing main sphere custom action options to not work after loading screens
+------------------------------------------------------------------------
+r58 | Belazor | 2008-10-22 21:21:42 +0000 (Wed, 22 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/data/defaults.lua
+   M /trunk/data/options.lua
+
+Indenting changes :p
+------------------------------------------------------------------------
+r57 | Belazor | 2008-10-22 21:17:00 +0000 (Wed, 22 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Sphere now supports tooltips.
+------------------------------------------------------------------------
+r56 | Belazor | 2008-10-22 18:37:46 +0000 (Wed, 22 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/data/mounts.lua
+
+- Macro is now stored server side instead of forcefully stored locally.
+- Macro is now created in the "General Macros" tab, rather than the "<charname> Specific Macros"
+------------------------------------------------------------------------
+r55 | paene | 2008-10-22 04:48:48 +0000 (Wed, 22 Oct 2008) | 3 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/locales/enUS.lua
+
+Added food and water counts
+Added options to turn the food and water counts on/off
+Added some initial framework for mana emerald charge counting
+------------------------------------------------------------------------
+r54 | paene | 2008-10-22 02:30:57 +0000 (Wed, 22 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+
+Fixed macro icon not updating properly
+------------------------------------------------------------------------
+r53 | paene | 2008-10-22 00:13:42 +0000 (Wed, 22 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+
+Fixed some bugs with main sphere actions
+------------------------------------------------------------------------
+r52 | paene | 2008-10-21 23:56:32 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/data/defaults.lua
+   M /trunk/data/options.lua
+
+Added left and middle-click options for main sphere (right click is still open menu)
+------------------------------------------------------------------------
+r51 | Belazor | 2008-10-21 19:53:35 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.toc
+
+Removed comments and invalid lib entry from ToC to remove FrameXML errors.
+------------------------------------------------------------------------
+r49 | paene | 2008-10-21 19:39:34 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/locales/enUS.lua
+
+Finish item cacheing!
+------------------------------------------------------------------------
+r48 | paene | 2008-10-21 17:38:57 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Attempt two billion at item cacheing
+------------------------------------------------------------------------
+r47 | paene | 2008-10-21 17:04:49 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/data/options.lua
+
+Added main sphere scaling
+------------------------------------------------------------------------
+r46 | paene | 2008-10-21 07:18:07 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/data/options.lua
+   M /trunk/locales/enUS.lua
+
+Fixed button scaling (frame scaling doesn't work yet)
+------------------------------------------------------------------------
+r45 | paene | 2008-10-21 06:25:04 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Added some framework for item cacheing
+------------------------------------------------------------------------
+r43 | paene | 2008-10-21 02:19:53 +0000 (Tue, 21 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Removed the cache function for now
+------------------------------------------------------------------------
+r40 | paene | 2008-10-20 20:41:22 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+   M /trunk/data/options.lua
+
+Fixed capitalization on several variables
+------------------------------------------------------------------------
+r39 | paene | 2008-10-20 19:10:36 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Added item cacheing checks to the food, water, and gem buttons
+------------------------------------------------------------------------
+r38 | paene | 2008-10-20 19:00:42 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.lua
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/global.lua
+
+Added an item caching function
+------------------------------------------------------------------------
+r37 | Belazor | 2008-10-20 18:35:16 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Don't create Buff or Teleport menu if no such spells exist.
+------------------------------------------------------------------------
+r34 | paene | 2008-10-20 03:44:26 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Added the ability to change the portal menu's growth direction
+------------------------------------------------------------------------
+r33 | paene | 2008-10-20 03:38:51 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+
+Fixed a bug that would cause button positions to not save when constricting to sphere
+------------------------------------------------------------------------
+r32 | Belazor | 2008-10-19 20:08:55 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+
+Buttons will now properly remember their free-form positions even if you snap them back onto the sphere and un-snap them again.
+------------------------------------------------------------------------
+r31 | Belazor | 2008-10-19 19:43:02 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/data/mounts.lua
+
+Fix and verify menu growth code.
+------------------------------------------------------------------------
+r30 | paene | 2008-10-19 19:23:14 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/data/defaults.lua
+   M /trunk/locales/enUS.lua
+
+Added initial framework for menu growth options
+------------------------------------------------------------------------
+r29 | paene | 2008-10-19 18:36:20 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/core/frames.lua
+
+Fixed a bug that allowed buttons inside of menus to be moved.
+------------------------------------------------------------------------
+r28 | Belazor | 2008-10-19 17:54:37 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/data/mounts.lua
+
+Band-aid for an error I don't really understand why happened.
+------------------------------------------------------------------------
+r27 | paene | 2008-10-19 08:29:55 +0000 (Sun, 19 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+
+Fixed button locking and constricting
+KNOWN BUG: Buttons inside menus can be move when buttons are unlocked
+------------------------------------------------------------------------
+r26 | paene | 2008-10-19 07:20:04 +0000 (Sun, 19 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/data/defaults.lua
+   M /trunk/locales/enUS.lua
+
+Added option to show/hide cooldown text on the evocation button
+Fixed text not updating when the main sphere's text was set to mana mana %
+------------------------------------------------------------------------
+r25 | Belazor | 2008-10-19 02:17:29 +0000 (Sun, 19 Oct 2008) | 3 lines
+Changed paths:
+   M /trunk/data/mounts.lua
+   M /trunk/data/options.lua
+   M /trunk/data/tooltips.lua
+   M /trunk/locales/enUS.lua
+
+- Fixed tooltip code for both mount options.
+- Changed "Flying First" -> "Automatic"
+- Removed some redundant code from :FindMounts()
+------------------------------------------------------------------------
+r24 | paene | 2008-10-19 01:44:16 +0000 (Sun, 19 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/data/defaults.lua
+
+Mount button now defaults to manual behavior
+------------------------------------------------------------------------
+r23 | paene | 2008-10-19 01:35:57 +0000 (Sun, 19 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/data/mounts.lua
+   M /trunk/data/tooltips.lua
+
+Added functionality for the old mount system
+Updated tooltips
+------------------------------------------------------------------------
+r22 | Belazor | 2008-10-18 00:53:38 +0000 (Sat, 18 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+
+Made Menus able to be opened in combat.
+------------------------------------------------------------------------
+r21 | paene | 2008-10-18 00:34:39 +0000 (Sat, 18 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/data/defaults.lua
+   M /trunk/data/options.lua
+   M /trunk/data/privates.lua
+   M /trunk/data/tooltips.lua
+   M /trunk/locales/enUS.lua
+
+Added tooltips and options for the old mount system
+Set the old mount system behavior as the default behavior
+------------------------------------------------------------------------
+r20 | Belazor | 2008-10-17 21:34:31 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/Cryolysis3.toc
+   M /trunk/classes/mage/mage.lua
+
+- Cleaned the ToC some
+- Added support for Frost Armor
+------------------------------------------------------------------------
+r18 | Belazor | 2008-10-17 16:50:59 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.toc
+
+Fixed inability to open the configuration menu in some scenarios.
+------------------------------------------------------------------------
+r16 | Belazor | 2008-10-17 15:24:42 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Fixed possible nil error with Evocation.
+------------------------------------------------------------------------
+r14 | Belazor | 2008-10-17 12:08:00 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+
+All buttons now have actions.
+------------------------------------------------------------------------
+r13 | Belazor | 2008-10-17 10:05:31 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/data/mounts.lua
+   M /trunk/data/options.lua
+
+- Mount button is now fully functioning.
+- Rescan Mounts button in the options is now back.
+------------------------------------------------------------------------
+r12 | Belazor | 2008-10-17 09:30:06 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+We don't need LPT for mounts anymore.
+------------------------------------------------------------------------
+r11 | Belazor | 2008-10-16 21:06:00 +0000 (Thu, 16 Oct 2008) | 4 lines
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/data/options.lua
+   M /trunk/locales/enUS.lua
+
+- Theramore/Stonard portals/teleports added.
+- All options added for Mage module
+- Temporarily commented out mount rescan button
+- Added mount button move button
+------------------------------------------------------------------------
+r10 | Belazor | 2008-10-16 20:22:24 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/core/global.lua
+   M /trunk/data/defaults.lua
+   M /trunk/data/spellcache.lua
+   M /trunk/locales/enUS.lua
+
+All Mage buttons are now created.
+------------------------------------------------------------------------
+r9 | Belazor | 2008-10-16 17:22:12 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+
+Added support for quicker menu additions.
+------------------------------------------------------------------------
+r8 | Belazor | 2008-10-16 17:15:13 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+
+Mage Buff menu populated.
+------------------------------------------------------------------------
+r7 | Belazor | 2008-10-16 16:34:26 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+
+Menu system now officially works as intended.
+------------------------------------------------------------------------
+r6 | Belazor | 2008-10-16 15:01:15 +0000 (Thu, 16 Oct 2008) | 3 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Cryolysis3.toc
+   M /trunk/classes/mage/mage.lua
+   M /trunk/core/buttons.lua
+   M /trunk/core/frames.lua
+   M /trunk/data/defaults.lua
+   D /trunk/embeds.xml
+   M /trunk/locales/enUS.lua
+
+- Remove embeds.xml (merged into ToC)
+- Fix .pkgmeta
+- Begin adding support for menu system
+------------------------------------------------------------------------
+r5 | Belazor | 2008-10-16 11:55:02 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Cryolysis3.toc
+
+ToC version is now based offa tag name.
+------------------------------------------------------------------------
+r4 | Belazor | 2008-10-16 11:53:23 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Whoops, wrong package-as.
+------------------------------------------------------------------------
+r2 | Belazor | 2008-10-16 11:48:59 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+   A /trunk/Cryolysis3.lua
+   A /trunk/Cryolysis3.toc
+   A /trunk/Developer Rules!.txt
+   A /trunk/classes
+   A /trunk/classes/druid
+   A /trunk/classes/druid/druid.lua
+   A /trunk/classes/druid/locales
+   A /trunk/classes/hunter
+   A /trunk/classes/hunter/hunter.lua
+   A /trunk/classes/hunter/locales
+   A /trunk/classes/mage
+   A /trunk/classes/mage/locales
+   A /trunk/classes/mage/mage.lua
+   A /trunk/classes/paladin
+   A /trunk/classes/paladin/locales
+   A /trunk/classes/paladin/paladin.lua
+   A /trunk/classes/priest
+   A /trunk/classes/priest/locales
+   A /trunk/classes/priest/priest.lua
+   A /trunk/classes/rogue
+   A /trunk/classes/rogue/locales
+   A /trunk/classes/rogue/rogue.lua
+   A /trunk/classes/shaman
+   A /trunk/classes/shaman/locales
+   A /trunk/classes/shaman/shaman.lua
+   A /trunk/classes/warlock
+   A /trunk/classes/warlock/locales
+   A /trunk/classes/warlock/warlock.lua
+   A /trunk/classes/warrior
+   A /trunk/classes/warrior/locales
+   A /trunk/classes/warrior/warrior.lua
+   A /trunk/core
+   A /trunk/core/buttons.lua
+   A /trunk/core/events.lua
+   A /trunk/core/frames.lua
+   A /trunk/core/global.lua
+   A /trunk/core/module.lua
+   A /trunk/core/sphere.lua
+   A /trunk/data
+   A /trunk/data/defaults.lua
+   A /trunk/data/mounts.lua
+   A /trunk/data/options.lua
+   A /trunk/data/privates.lua
+   A /trunk/data/spellcache.lua
+   A /trunk/data/tooltips.lua
+   A /trunk/embeds.xml
+   A /trunk/locales
+   A /trunk/locales/deDE.lua
+   A /trunk/locales/enUS.lua
+   A /trunk/locales/esES.lua
+   A /trunk/locales/frFR.lua
+   A /trunk/locales/koKR.lua
+   A /trunk/locales/zhCN.lua
+   A /trunk/locales/zhTW.lua
+   A /trunk/modules
+   A /trunk/modules/messages
+   A /trunk/modules/messages/locales
+   A /trunk/modules/messages/messages.lua
+   A /trunk/modules/reagents
+   A /trunk/modules/reagents/locales
+   A /trunk/modules/reagents/reagents.lua
+   A /trunk/modules/warnings
+   A /trunk/modules/warnings/locales
+   A /trunk/modules/warnings/warnings.lua
+   A /trunk/modules.xml
+   A /trunk/textures
+   A /trunk/textures/666
+   A /trunk/textures/666/Shard0.tga
+   A /trunk/textures/666/Shard1.tga
+   A /trunk/textures/666/Shard10.tga
+   A /trunk/textures/666/Shard11.tga
+   A /trunk/textures/666/Shard12.tga
+   A /trunk/textures/666/Shard13.tga
+   A /trunk/textures/666/Shard14.tga
+   A /trunk/textures/666/Shard15.tga
+   A /trunk/textures/666/Shard16.tga
+   A /trunk/textures/666/Shard17.tga
+   A /trunk/textures/666/Shard18.tga
+   A /trunk/textures/666/Shard19.tga
+   A /trunk/textures/666/Shard2.tga
+   A /trunk/textures/666/Shard20.tga
+   A /trunk/textures/666/Shard21.tga
+   A /trunk/textures/666/Shard22.tga
+   A /trunk/textures/666/Shard23.tga
+   A /trunk/textures/666/Shard24.tga
+   A /trunk/textures/666/Shard25.tga
+   A /trunk/textures/666/Shard26.tga
+   A /trunk/textures/666/Shard27.tga
+   A /trunk/textures/666/Shard28.tga
+   A /trunk/textures/666/Shard29.tga
+   A /trunk/textures/666/Shard3.tga
+   A /trunk/textures/666/Shard30.tga
+   A /trunk/textures/666/Shard31.tga
+   A /trunk/textures/666/Shard32.tga
+   A /trunk/textures/666/Shard4.tga
+   A /trunk/textures/666/Shard5.tga
+   A /trunk/textures/666/Shard6.tga
+   A /trunk/textures/666/Shard7.tga
+   A /trunk/textures/666/Shard8.tga
+   A /trunk/textures/666/Shard9.tga
+   A /trunk/textures/Blue
+   A /trunk/textures/Blue/Shard0.tga
+   A /trunk/textures/Blue/Shard1.tga
+   A /trunk/textures/Blue/Shard10.tga
+   A /trunk/textures/Blue/Shard11.tga
+   A /trunk/textures/Blue/Shard12.tga
+   A /trunk/textures/Blue/Shard13.tga
+   A /trunk/textures/Blue/Shard14.tga
+   A /trunk/textures/Blue/Shard15.tga
+   A /trunk/textures/Blue/Shard16.tga
+   A /trunk/textures/Blue/Shard17.tga
+   A /trunk/textures/Blue/Shard18.tga
+   A /trunk/textures/Blue/Shard19.tga
+   A /trunk/textures/Blue/Shard2.tga
+   A /trunk/textures/Blue/Shard20.tga
+   A /trunk/textures/Blue/Shard21.tga
+   A /trunk/textures/Blue/Shard22.tga
+   A /trunk/textures/Blue/Shard23.tga
+   A /trunk/textures/Blue/Shard24.tga
+   A /trunk/textures/Blue/Shard25.tga
+   A /trunk/textures/Blue/Shard26.tga
+   A /trunk/textures/Blue/Shard27.tga
+   A /trunk/textures/Blue/Shard28.tga
+   A /trunk/textures/Blue/Shard29.tga
+   A /trunk/textures/Blue/Shard3.tga
+   A /trunk/textures/Blue/Shard30.tga
+   A /trunk/textures/Blue/Shard31.tga
+   A /trunk/textures/Blue/Shard32.tga
+   A /trunk/textures/Blue/Shard4.tga
+   A /trunk/textures/Blue/Shard5.tga
+   A /trunk/textures/Blue/Shard6.tga
+   A /trunk/textures/Blue/Shard7.tga
+   A /trunk/textures/Blue/Shard8.tga
+   A /trunk/textures/Blue/Shard9.tga
+   A /trunk/textures/Orange
+   A /trunk/textures/Orange/Shard0.tga
+   A /trunk/textures/Orange/Shard1.tga
+   A /trunk/textures/Orange/Shard10.tga
+   A /trunk/textures/Orange/Shard11.tga
+   A /trunk/textures/Orange/Shard12.tga
+   A /trunk/textures/Orange/Shard13.tga
+   A /trunk/textures/Orange/Shard14.tga
+   A /trunk/textures/Orange/Shard15.tga
+   A /trunk/textures/Orange/Shard16.tga
+   A /trunk/textures/Orange/Shard17.tga
+   A /trunk/textures/Orange/Shard18.tga
+   A /trunk/textures/Orange/Shard19.tga
+   A /trunk/textures/Orange/Shard2.tga
+   A /trunk/textures/Orange/Shard20.tga
+   A /trunk/textures/Orange/Shard21.tga
+   A /trunk/textures/Orange/Shard22.tga
+   A /trunk/textures/Orange/Shard23.tga
+   A /trunk/textures/Orange/Shard24.tga
+   A /trunk/textures/Orange/Shard25.tga
+   A /trunk/textures/Orange/Shard26.tga
+   A /trunk/textures/Orange/Shard27.tga
+   A /trunk/textures/Orange/Shard28.tga
+   A /trunk/textures/Orange/Shard29.tga
+   A /trunk/textures/Orange/Shard3.tga
+   A /trunk/textures/Orange/Shard30.tga
+   A /trunk/textures/Orange/Shard31.tga
+   A /trunk/textures/Orange/Shard32.tga
+   A /trunk/textures/Orange/Shard4.tga
+   A /trunk/textures/Orange/Shard5.tga
+   A /trunk/textures/Orange/Shard6.tga
+   A /trunk/textures/Orange/Shard7.tga
+   A /trunk/textures/Orange/Shard8.tga
+   A /trunk/textures/Orange/Shard9.tga
+   A /trunk/textures/Rose
+   A /trunk/textures/Rose/Shard0.tga
+   A /trunk/textures/Rose/Shard1.tga
+   A /trunk/textures/Rose/Shard10.tga
+   A /trunk/textures/Rose/Shard11.tga
+   A /trunk/textures/Rose/Shard12.tga
+   A /trunk/textures/Rose/Shard13.tga
+   A /trunk/textures/Rose/Shard14.tga
+   A /trunk/textures/Rose/Shard15.tga
+   A /trunk/textures/Rose/Shard16.tga
+   A /trunk/textures/Rose/Shard17.tga
+   A /trunk/textures/Rose/Shard18.tga
+   A /trunk/textures/Rose/Shard19.tga
+   A /trunk/textures/Rose/Shard2.tga
+   A /trunk/textures/Rose/Shard20.tga
+   A /trunk/textures/Rose/Shard21.tga
+   A /trunk/textures/Rose/Shard22.tga
+   A /trunk/textures/Rose/Shard23.tga
+   A /trunk/textures/Rose/Shard24.tga
+   A /trunk/textures/Rose/Shard25.tga
+   A /trunk/textures/Rose/Shard26.tga
+   A /trunk/textures/Rose/Shard27.tga
+   A /trunk/textures/Rose/Shard28.tga
+   A /trunk/textures/Rose/Shard29.tga
+   A /trunk/textures/Rose/Shard3.tga
+   A /trunk/textures/Rose/Shard30.tga
+   A /trunk/textures/Rose/Shard31.tga
+   A /trunk/textures/Rose/Shard32.tga
+   A /trunk/textures/Rose/Shard4.tga
+   A /trunk/textures/Rose/Shard5.tga
+   A /trunk/textures/Rose/Shard6.tga
+   A /trunk/textures/Rose/Shard7.tga
+   A /trunk/textures/Rose/Shard8.tga
+   A /trunk/textures/Rose/Shard9.tga
+   A /trunk/textures/Turquoise
+   A /trunk/textures/Turquoise/Shard0.tga
+   A /trunk/textures/Turquoise/Shard1.tga
+   A /trunk/textures/Turquoise/Shard10.tga
+   A /trunk/textures/Turquoise/Shard11.tga
+   A /trunk/textures/Turquoise/Shard12.tga
+   A /trunk/textures/Turquoise/Shard13.tga
+   A /trunk/textures/Turquoise/Shard14.tga
+   A /trunk/textures/Turquoise/Shard15.tga
+   A /trunk/textures/Turquoise/Shard16.tga
+   A /trunk/textures/Turquoise/Shard17.tga
+   A /trunk/textures/Turquoise/Shard18.tga
+   A /trunk/textures/Turquoise/Shard19.tga
+   A /trunk/textures/Turquoise/Shard2.tga
+   A /trunk/textures/Turquoise/Shard20.tga
+   A /trunk/textures/Turquoise/Shard21.tga
+   A /trunk/textures/Turquoise/Shard22.tga
+   A /trunk/textures/Turquoise/Shard23.tga
+   A /trunk/textures/Turquoise/Shard24.tga
+   A /trunk/textures/Turquoise/Shard25.tga
+   A /trunk/textures/Turquoise/Shard26.tga
+   A /trunk/textures/Turquoise/Shard27.tga
+   A /trunk/textures/Turquoise/Shard28.tga
+   A /trunk/textures/Turquoise/Shard29.tga
+   A /trunk/textures/Turquoise/Shard3.tga
+   A /trunk/textures/Turquoise/Shard30.tga
+   A /trunk/textures/Turquoise/Shard31.tga
+   A /trunk/textures/Turquoise/Shard32.tga
+   A /trunk/textures/Turquoise/Shard4.tga
+   A /trunk/textures/Turquoise/Shard5.tga
+   A /trunk/textures/Turquoise/Shard6.tga
+   A /trunk/textures/Turquoise/Shard7.tga
+   A /trunk/textures/Turquoise/Shard8.tga
+   A /trunk/textures/Turquoise/Shard9.tga
+   A /trunk/textures/Violet
+   A /trunk/textures/Violet/Shard0.tga
+   A /trunk/textures/Violet/Shard1.tga
+   A /trunk/textures/Violet/Shard10.tga
+   A /trunk/textures/Violet/Shard11.tga
+   A /trunk/textures/Violet/Shard12.tga
+   A /trunk/textures/Violet/Shard13.tga
+   A /trunk/textures/Violet/Shard14.tga
+   A /trunk/textures/Violet/Shard15.tga
+   A /trunk/textures/Violet/Shard16.tga
+   A /trunk/textures/Violet/Shard17.tga
+   A /trunk/textures/Violet/Shard18.tga
+   A /trunk/textures/Violet/Shard19.tga
+   A /trunk/textures/Violet/Shard2.tga
+   A /trunk/textures/Violet/Shard20.tga
+   A /trunk/textures/Violet/Shard21.tga
+   A /trunk/textures/Violet/Shard22.tga
+   A /trunk/textures/Violet/Shard23.tga
+   A /trunk/textures/Violet/Shard24.tga
+   A /trunk/textures/Violet/Shard25.tga
+   A /trunk/textures/Violet/Shard26.tga
+   A /trunk/textures/Violet/Shard27.tga
+   A /trunk/textures/Violet/Shard28.tga
+   A /trunk/textures/Violet/Shard29.tga
+   A /trunk/textures/Violet/Shard3.tga
+   A /trunk/textures/Violet/Shard30.tga
+   A /trunk/textures/Violet/Shard31.tga
+   A /trunk/textures/Violet/Shard32.tga
+   A /trunk/textures/Violet/Shard4.tga
+   A /trunk/textures/Violet/Shard5.tga
+   A /trunk/textures/Violet/Shard6.tga
+   A /trunk/textures/Violet/Shard7.tga
+   A /trunk/textures/Violet/Shard8.tga
+   A /trunk/textures/Violet/Shard9.tga
+   A /trunk/textures/X
+   A /trunk/textures/X/Shard0.tga
+   A /trunk/textures/X/Shard1.tga
+   A /trunk/textures/X/Shard10.tga
+   A /trunk/textures/X/Shard11.tga
+   A /trunk/textures/X/Shard12.tga
+   A /trunk/textures/X/Shard13.tga
+   A /trunk/textures/X/Shard14.tga
+   A /trunk/textures/X/Shard15.tga
+   A /trunk/textures/X/Shard16.tga
+   A /trunk/textures/X/Shard17.tga
+   A /trunk/textures/X/Shard18.tga
+   A /trunk/textures/X/Shard19.tga
+   A /trunk/textures/X/Shard2.tga
+   A /trunk/textures/X/Shard20.tga
+   A /trunk/textures/X/Shard21.tga
+   A /trunk/textures/X/Shard22.tga
+   A /trunk/textures/X/Shard23.tga
+   A /trunk/textures/X/Shard24.tga
+   A /trunk/textures/X/Shard25.tga
+   A /trunk/textures/X/Shard26.tga
+   A /trunk/textures/X/Shard27.tga
+   A /trunk/textures/X/Shard28.tga
+   A /trunk/textures/X/Shard29.tga
+   A /trunk/textures/X/Shard3.tga
+   A /trunk/textures/X/Shard30.tga
+   A /trunk/textures/X/Shard31.tga
+   A /trunk/textures/X/Shard32.tga
+   A /trunk/textures/X/Shard4.tga
+   A /trunk/textures/X/Shard5.tga
+   A /trunk/textures/X/Shard6.tga
+   A /trunk/textures/X/Shard7.tga
+   A /trunk/textures/X/Shard8.tga
+   A /trunk/textures/X/Shard9.tga
+   A /trunk/textures/background.tga
+   A /trunk/textures/highlight.tga
+   A /trunk/textures/nohighlight.tga
+
+Initial commit.
+------------------------------------------------------------------------
+r1 | root | 2008-10-16 11:32:53 +0000 (Thu, 16 Oct 2008) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+"cryolysis3/mainline: Initial Import"
+------------------------------------------------------------------------

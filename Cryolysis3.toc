@@ -1,0 +1,59 @@
+## Interface: 20502
+## X-Curse-Packaged-Version: v3.1-beta14
+
+## Title: Cryolysis 3 |cff7fff7f -Ace3-|r
+## Version: v3.1-beta14
+## Author: lancestre, Paene, Belazor
+## Notes: A sphere based spell and buff management tool for some classes. (BETA , thanks for your help)
+## Notes-ruRU: Сферический инструментарий для удобной организации заклинаний длявсех классов. (PRE-ALPHA, используйте на свой страх и риск!)
+
+## OptionalDeps: Ace3
+
+## SavedVariables: Cryolysis3DB
+## SavedVariablesPerCharacter: Cryolysis3DBPerChar
+
+#@no-lib-strip@
+
+## Load Libraries
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+libs\AceTimer-3.0\AceTimer-3.0.xml
+libs\LibPeriodicTable-3.1\LibPeriodicTable-3.1.lua
+libs\LibPeriodicTable-3.1-ClassSpell\LibPeriodicTable-3.1-ClassSpell.lua
+
+#@end-no-lib-strip@
+
+locales\deDE.lua
+locales\ruRU.lua
+locales\enUS.lua
+locales\esES.lua
+locales\frFR.lua
+locales\koKR.lua
+locales\zhCN.lua
+locales\zhTW.lua
+
+Cryolysis3.lua
+
+data\privates.lua
+data\spellcache.lua
+data\defaults.lua
+data\options.lua
+data\mounts.lua
+data\tooltips.lua
+
+core\global.lua
+core\frames.lua
+core\buttons.lua
+core\events.lua
+core\module.lua
+core\sphere.lua
+
+modules.xml
