@@ -18,6 +18,7 @@ Cryolysis3.spellCache = {
 function Cryolysis3:PopulateSpellList(tbl)
 	for x, y in pairs(tbl) do
 		for k, v in pairs(LibStub("LibPeriodicTable-3.1"):GetSetTable(y)) do
+
 			if (tonumber(k) ~= nil) then
 				table.insert(Cryolysis3.spellList, -(tonumber(k)));
 			end
@@ -45,7 +46,7 @@ function Cryolysis3:CacheSpells()
 		-- Get spell name and rank from spell book
 		--local spellName, spellRank = GetSpellName(i, BOOKTYPE_SPELL);
 		local spellName, spellRank, spellID = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-		--print(spellName, spellRank, spellID )
+		
 		if not spellName then
 			do break; end
 		end
@@ -57,8 +58,9 @@ function Cryolysis3:CacheSpells()
 			temp[spellName] = spellName;
 			else
 			temp[spellName..spellRank] = spellName..spellRank;
+			temp[spellName] = spellName;		
 			end
-		--print (spellName,spellRank)
+		--print ("temp spell add",spellName,spellRank)
 		end
 		
 		-- Finally increment the counter
@@ -66,9 +68,12 @@ function Cryolysis3:CacheSpells()
 	end
 	
 	for i = 1, #(Cryolysis3.spellList), 1 do
+	--for i = 1, 100, 1 do
 		--print (Cryolysis3.spellList[i],i)
-		local name, rank, icon, cost, isFunnel, powerType, castTime, minRange, maxRange = GetSpellInfo(Cryolysis3.spellList[i]);
-		--print(name, rank, icon, cost, isFunnel, powerType, castTime, minRange, maxRange)
+		local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(Cryolysis3.spellList[i]);
+		if name == "Invocation de nourriture" then
+		--print(Cryolysis3.spellList[i],":","temp name",temp[name],name, rank, icon, castTime, minRange, maxRange, spellID)
+		end
 		if (name ~= nil) then
 			if (temp[name] ~= nil) then
 				

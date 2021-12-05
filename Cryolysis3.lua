@@ -128,7 +128,7 @@ function Cryolysis3:CacheItems(itemList)
 	if (itemList ~= nil) then
 		for i = 1, #(itemList), 1 do
 			if (GetItemInfo(itemList[i]) == nil or GetItemInfo(itemList[i]) == "") then
-				print ('Item',i,GetItemInfo(itemList[i]))
+				--print ('Item',i,GetItemInfo(itemList[i]))
 				StaticPopup_Show("ITEM_CACHE_WARNING");
 				GameTooltip:SetOwner(UIParent, "CENTER");
 				GameTooltip:SetHyperlink("item:"..itemList[i]..":0:0:0:0:0:0:0:0");
@@ -216,7 +216,7 @@ end
 function Cryolysis3:OnEnable()
 	-- Store this since we use it so often
 	Cryolysis3.className = select(2, UnitClass("player"));
-	print (Cryolysis3.className)
+	--print (Cryolysis3.className)
 	-- Register for some common events used by all modules
 	Cryolysis3:RegisterCommonEvents();
 	

@@ -136,7 +136,7 @@ end
 -- Function to fetch lookup table to be used in :UpdateItemCount
 ------------------------------------------------------------------------------------------------------
 local function GetLookupTable(name)
-	
+	--print ("name",name)
 	-- Lookup table for conjure spell id -> item id
 	if (name == "water") then
 		return {
@@ -616,6 +616,7 @@ function module:OnEnable()
 	};
 	
 	-- Create spellList
+	
 	Cryolysis3:PopulateSpellList(t);
 
 	-- Add talent spellds
@@ -711,7 +712,7 @@ end
 ------------------------------------------------------------------------------------------------------
 function module:CreateButtons()
 	
-	print ('creation button')
+	--print ('creation button')
 	if (Cryolysis3:HasSpell(12051)) then
 		-- We has an Evocation, create and set up the button for it
 		Cryolysis3:CreateButton("EvocationButton", UIParent, Cryolysis3.spellCache[12051].icon);
@@ -740,15 +741,16 @@ function module:CreateButtons()
 	local gemLookupTable = GetLookupTable("gem");
 	
 	-- Check for highest rank of food
-	local foodID = Cryolysis3:GetHighestRank(foodLookupTable);
-
+	local foodID = Cryolysis3:GetHighestRank(foodLookupTable, "food");
+	--foodID = 33717 -- croissant
+	--print ("foodID",foodLookupTable,foodID)
 	-- Check for highest rank of water
 	local waterID = Cryolysis3:GetHighestRank(waterLookupTable, "water");
 
 	-- Check for highest rank of gem
-	local gemID = Cryolysis3:GetHighestRank(gemLookupTable);
+	local gemID = Cryolysis3:GetHighestRank(gemLookupTable, "gem");
 
-	if (foodID ~= nil) then
+	if (foodID ~= nil ) then
 		Cryolysis3:CreateButton("FoodButton",	UIParent,	select(3, GetSpellInfo(foodID)));
 		Cryolysis3.Private.tooltips["FoodButton"] = {};
 		
@@ -766,7 +768,7 @@ function module:CreateButtons()
 		Cryolysis3.db.char.buttonFunctions["FoodButton"].left = "/use "..foodName;
 		Cryolysis3.db.char.buttonFunctions["FoodButton"].right = "/cast "..Cryolysis3.spellCache[foodID].name;
 	
-		if (Cryolysis3:HasSpell(43987)) then
+		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
 			table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
 			Cryolysis3.db.char.buttonFunctions["FoodButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
 		end
@@ -774,7 +776,7 @@ function module:CreateButtons()
 		Cryolysis3:UpdateAllButtonAttributes("FoodButton");
 	end
 
-	if (waterID ~= nil) then
+	if (waterID ~= nil ) then
 		Cryolysis3:CreateButton("WaterButton",	UIParent,	select(3, GetSpellInfo(waterID)));
 		Cryolysis3.Private.tooltips["WaterButton"] = {};
 		
@@ -792,7 +794,7 @@ function module:CreateButtons()
 		Cryolysis3.db.char.buttonFunctions["WaterButton"].left = "/use "..waterName;
 		Cryolysis3.db.char.buttonFunctions["WaterButton"].right = "/cast "..Cryolysis3.spellCache[waterID].name;
 
-		if (Cryolysis3:HasSpell(43987)) then
+		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
 			table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
 			Cryolysis3.db.char.buttonFunctions["WaterButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
 		end

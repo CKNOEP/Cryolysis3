@@ -373,7 +373,7 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 	if (InCombatLockdown()) then  -- You can't set button attributes in-combat
 		return false;
 	end
-	print (button, modifier, click, actionType, action)
+	--print (button, modifier, click, actionType, action)
 	-- Get the button and set the attribute, return with an error if it doesn't exist
 	local b = _G["Cryolysis3"..button];
 	local t = _G["Cryolysis3"..button.."Icon"];

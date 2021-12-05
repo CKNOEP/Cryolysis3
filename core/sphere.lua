@@ -55,7 +55,7 @@ function Cryolysis3:UpdateSphere(sphereType)
 		
 		elseif sphereFunc == 3 then	-- Show Mana/Energy/Rage
 			-- Get the player's Mana/Energy/Rage % and translate into 1/32 ticks
-			ChosenAttrib = floor(((UnitMana("player") / UnitManaMax("player")) * 100) / divide);
+			ChosenAttrib = floor(((UnitPower("player") / UnitPowerMax("player")) * 100) / divide);
 		end
 
 		if (Cryolysis3.db.char.outerSphereSkin == 2) then
@@ -91,12 +91,12 @@ function Cryolysis3:UpdateSphere(sphereType)
 		
 		elseif (sphereFunc == 4) then
 			-- Set Mana/Energy/Rage value
-			red, green, blue, alpha = Cryolysis3:CalculateRGB(UnitMana("player") / UnitManaMax("player"));
-			sphereText = UnitMana("player");
+			red, green, blue, alpha = Cryolysis3:CalculateRGB(UnitPower("player") / UnitPowerMax("player"));
+			sphereText = UnitPowerMax("player");
 		
 		elseif (sphereFunc == 5) then
 			-- Set Mana/Energy/Rage %
-			local manaValue = UnitMana("player") / UnitManaMax("player");
+			local manaValue = UnitPower("player") / UnitPowerMax("player");
 			
 			red, green, blue, alpha = Cryolysis3:CalculateRGB(manaValue);
 			sphereText = floor(manaValue * 100).."%";
