@@ -1064,7 +1064,7 @@ function module:RegisterClassEvents()
 	--module:RegisterEvent("UNIT_SPELLCAST_SENT");
 	--module:RegisterEvent("TRADE_SHOW");
 	--module:RegisterEvent("TRADE_CLOSED");
-	module:RegisterEvent("UNIT_MANA");
+	module:RegisterEvent("UNIT_POWER_UPDATE");
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -1106,6 +1106,7 @@ function module:UNIT_SPELLCAST_SUCCEEDED(info, unit, name, rank)
 		end
 	end
 
+Cryolysis3:UpdateSphere()
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -1139,7 +1140,7 @@ end
 ------------------------------------------------------------------------------------------------------
 -- We all loves the manas!
 ------------------------------------------------------------------------------------------------------
-function module:UNIT_MANA(event, unitId)
+function module:UNIT_POWER_UPDATE(event, unitId)
 	if (unitId == "player") then
 		if (tonumber(Cryolysis3.db.char.outerSphere) == 3) then
 			Cryolysis3:UpdateSphere("outerSphere");

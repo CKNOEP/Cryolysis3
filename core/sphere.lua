@@ -30,6 +30,7 @@ end
 -- Update attributes for the main sphere (outerSphere, sphereText, sphereAttribute)
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:UpdateSphere(sphereType)
+	
 	if (sphereType == nil or Cryolysis3.db.char[sphereType] == nil) then
 		return false;
 	end
