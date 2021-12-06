@@ -5,37 +5,83 @@ local Cryolysis3 = Cryolysis3;
 local L = LibStub("AceLocale-3.0"):GetLocale("Cryolysis3");
 
 
+
+
+local list_mount = {
+--slow Ground
+    29221, 8632, 28481, 29743, 29744, 8629, 29222, 5656, 2411, 5665, 15277, 5655,
+    28927, 29220, 8631, 2414, 33224, 1132, 13331, 8588, 5864, 12327, 5668, 8591,
+    13333, 13332, 5872, 15290, 33976, 8592, 12325, 12326, 8595, 5873, 8563,
+    13322, 13321, 13325, 37827, 13324, 13323,
+
+--Fast Ground
+    35906, 34129, 19029, 29471, 29472, 19030, 13086, 29468, 29466, 29467, 29469,
+    29470, 35513, 33225, 29465, 19902, 18766, 29223, 29745, 18242, 29746, 13335,
+    28936, 18902, 29224, 18767, 29747, 37012, 18246, 18790, 18776, 18778, 18797,
+    12303, 18789, 18793, 19872, 18798, 13334, 18777, 18791, 29103, 37828, 18245,
+    18796, 12302, 18785, 18795, 37719, 29228, 18788, 18248, 18773, 18794, 29229,
+    38576, 31830, 13317, 18241, 18772, 18787, 12353, 8586, 31829, 37598, 12330,
+    18768, 28915, 18786, 31835, 18247, 29227, 18243, 18244, 12351, 12351, 28482,
+    13329, 33977, 12354, 13327, 31832, 13326, 29104, 15293, 15292, 23193, 31831,
+    31836, 13328, 18774, 29102, 29105, 29230, 29231, 31833, 31834, 32768, 30480,
+    33809, 37011,
+
+--Slow Flying
+    34060, 25470, 25472, 25471, 25474, 25475, 25476, 35225,
+
+--Fast Flying
+    32458, 34061, 33999, 30609, 34092, 32858, 37676, 32857, 25473, 35226, 32319,
+    25533, 32317, 32859, 32860, 25477, 25529, 32316, 32314, 32861, 25527, 32862,
+    25531, 32318, 25528, 25532, 37011
+}
+
 ------------------------------------------------------------------------------------------------------
 -- Function to find all mounts in our inventory
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:DetectMounts()
 	local name, link, mountID;
 	local mounts = {};
+
+
+
+    -- check for mounts in bags	
+	 for bag = 0, NUM_BAG_SLOTS do
+        for slot = 1, GetContainerNumSlots(bag) do
+            item = GetContainerItemID(bag, slot)
+            if item ~= nil then
+                itype = select(3, GetItemInfoInstant(item))
+                itypeID = select(6, GetItemInfoInstant(item))
+				isubtypeID = select(7, GetItemInfoInstant(item))
+				
+				if (itypeID == 15 and isubtypeID == 5)  then
+                    name = select(1, GetItemInfo(item))
+                    link = select(2, GetItemInfo(item))  
+						if (not Cryolysis3.db.char.silentMode) then
+							-- Only print this if we're not in silent mode
+							Cryolysis3:Print(L["Found Mount: "]..link);
+						end
 	
-	for id = 1, GetNumCompanions("MOUNT") do
-		mountID = select(3, GetCompanionInfo("MOUNT", id))
-		name = GetSpellInfo(mountID);
-		link = GetSpellLink(mountID);
+						if (Cryolysis3.db.char.chosenMount["normal"] == nil) then
+							-- Default to this mount chosen
+							Cryolysis3.db.char.chosenMount["normal"] = item;
+						end
+						
+						if (Cryolysis3.db.char.chosenMount["flying"] == nil) then
+							-- Default to this mount chosen
+							Cryolysis3.db.char.chosenMount["normal"] = item;
+						end
+						
+						-- Add it to our array of found mounts
+						mounts[name] = name;			
+								
+				
+				
+				end
+            end
+			
+         end
+    end
 		
-		if (not Cryolysis3.db.char.silentMode) then
-			-- Only print this if we're not in silent mode
-			Cryolysis3:Print(L["Found Mount: "]..link);
-		end
-		
-		if (Cryolysis3.db.char.chosenMount["normal"] == nil) then
-			-- Default to this mount chosen
-			Cryolysis3.db.char.chosenMount["normal"] = name;
-		end
-		
-		if (Cryolysis3.db.char.chosenMount["flying"] == nil) then
-			-- Default to this mount chosen
-			Cryolysis3.db.char.chosenMount["normal"] = name;
-		end
-		
-		-- Add it to our array of found mounts
-		mounts[name] = name;
-	end
-	
 	-- Finally add the found mounts array to the private variable
 	Cryolysis3.Private.mounts = mounts;
 	mounts = nil;
@@ -49,7 +95,7 @@ function Cryolysis3:FindMounts(hasLoaded)
 		-- Make sure this is a table
 		Cryolysis3.db.char.buttonFunctions.MountButton = {};
 	end
-	
+	print ("hasLoaded",hasLoaded)
 	if (hasLoaded == nil) then
 		-- Create the mount button
 		Cryolysis3:CreateButton("MountButton", UIParent);
@@ -148,13 +194,13 @@ function Cryolysis3:UpdateMountButtonMacro()
 	local MacroParameters = {
 		"Cryo3",
 		1,
-		string.format("#showtooltip\n%s", macro)
+		string.format("#showtooltip "..hs.."\n%s", macro)
 	};
 
 	if (GetMacroIndexByName(Cryolysis3.Private.macroName) ~= 0) then
-		EditMacro(Cryolysis3.Private.macroName, unpack(MacroParameters));
+		EditMacro(GetMacroIndexByName(Cryolysis3.Private.macroName),Cryolysis3.Private.macroName,134414,macro);
 	elseif ((GetNumMacros()) < 36) then
-		CreateMacro(unpack(MacroParameters));
+		CreateMacro("Cryo3",134414,macro);
 	else
 		Cryolysis3:Print("Too many macros exist, Cryolysis cannot create its macro");
 		return false;

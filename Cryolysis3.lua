@@ -58,7 +58,7 @@ local function InitStartup()
 	Cryolysis3.Private.mountRegion = IsFlyableArea();
 	
 	-- Find our mounts
-	--Cryolysis3:FindMounts();
+	Cryolysis3:FindMounts();
 	
 	-- Setup custom buttons
 	Cryolysis3:CreateCustomButtons();
