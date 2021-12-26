@@ -95,7 +95,7 @@ function Cryolysis3:FindMounts(hasLoaded)
 		-- Make sure this is a table
 		Cryolysis3.db.char.buttonFunctions.MountButton = {};
 	end
-	print ("hasLoaded",hasLoaded)
+	
 	if (hasLoaded == nil) then
 		-- Create the mount button
 		Cryolysis3:CreateButton("MountButton", UIParent);
