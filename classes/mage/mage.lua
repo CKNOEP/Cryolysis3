@@ -143,8 +143,8 @@ local function GetLookupTable(name)
 			-- Normal ranks of Water
 			--[42956] = 43523,--Strudel de manne invoqué
 			--[42955] = 43518,
-			[27090]	= 22018,--Eau des glaciers invoquée
-			[37420]	= 30703,--eau-de-source-des-montagnes-invoquée
+			--[27090]	= 22018,--Eau des glaciers invoquée
+			--[37420]	= 30703,--eau-de-source-des-montagnes-invoquée
 			[10140]	= 8079,
 			[10139]	= 8078,
 			[10138]	= 8077,
@@ -159,8 +159,8 @@ local function GetLookupTable(name)
 			-- Normal ranks of Food
 			--[42956] = 43523,
 			--[42955] = 43518,
-			[33717]	= 22019,
-			[28612]	= 22895,
+			--[33717]	= 22019,
+			--[28612]	= 22895,
 			[10145]	= 8076,
 			[10144]	= 8075,
 			[6129]	= 1487,
@@ -171,7 +171,7 @@ local function GetLookupTable(name)
 	elseif (name == "gem") then  --This should be changed to show the number of charges available for mana emerald, but we have to wait for Blizz to add the ItemChargeCount function...:(
 		return {
 			--[42985]	= 33312,
-			[27101]	= 22044,
+			--[27101]	= 22044,
 			[10054]	= 8008,
 			[10053]	= 8007,
 			[3552]	= 5513,
