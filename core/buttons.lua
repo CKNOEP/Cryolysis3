@@ -469,9 +469,9 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 			end
 		end
 		
-		-- Set our attributes
-		b:SetAttribute(actionType..click, actionName);
-		b:SetAttribute(modifier..actionType.."*", actionName);
+		-- Set our attributes (use original action ID for spell/item, not the name)
+		b:SetAttribute(actionType..click, action);
+		b:SetAttribute(modifier..actionType.."*", action);
 	end
 end
 
