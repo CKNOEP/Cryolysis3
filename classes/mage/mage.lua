@@ -750,10 +750,15 @@ function module:CreateButtons()
 
 		-- Update Evocation cooldown
 		UpdateEvocation();
+		Cryolysis3:Print("[DEBUG] EvocationButton created successfully");
+	else
+		Cryolysis3:Print("[DEBUG] EvocationButton NOT created (no spell 12051)");
 	end
-	
+
+	Cryolysis3:Print("[DEBUG] Getting lookup tables...");
 	-- Lookup table for conjure spell id -> item id
 	local foodLookupTable = GetLookupTable("food");
+	Cryolysis3:Print("[DEBUG] foodLookupTable retrieved");
 	local waterLookupTable = GetLookupTable("water");
 	local gemLookupTable = GetLookupTable("gem");
 	
