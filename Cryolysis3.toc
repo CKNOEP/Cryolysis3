@@ -1,4 +1,4 @@
-## Interface: 20504
+## Interface: 20506
 ## X-Curse-Packaged-Version: v3.1-beta14
 
 ## Title: Cryolysis 3 |cff7fff7f -Ace3-|r
@@ -18,6 +18,28 @@
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceGUI-3.0\widgets\AceGUIWidget-Button.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-CheckBox.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-ColorPicker.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-DropDown.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-DropDown-Items.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-EditBox.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-Heading.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-Icon.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-InteractiveLabel.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-Keybinding.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-Label.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-MultiLineEditBox.lua
+libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-SimpleGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-BlizOptionsGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-DropDownGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-Frame.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-InlineGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-ScrollFrame.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-TabGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-TreeGroup.lua
+libs\AceGUI-3.0\widgets\AceGUIContainer-Window.lua
 libs\AceAddon-3.0\AceAddon-3.0.xml
 libs\AceConfig-3.0\AceConfig-3.0.xml
 libs\AceConsole-3.0\AceConsole-3.0.xml
