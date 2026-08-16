@@ -1,0 +1,24 @@
+name: Create Release Archive
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create archive
+        run: |
+          mkdir -p Cryolysis3
+          rsync -av --exclude='.git' --exclude='.github' --exclude='*.zip' . Cryolysis3/
+          zip -r Cryolysis3.zip Cryolysis3/
+
+      - name: Upload archive to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Cryolysis3.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
