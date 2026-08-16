@@ -196,8 +196,12 @@ end
 -- Update sphere
 ------------------------------------------------------------------------------------------------------
 local function UpdateSphereTooltip()
-	Cryolysis3.Private.tooltips["Sphere"][2] = L["Conjured Food"]..": "..(Cryolysis3FoodButtonText:GetText() or 0);
-	Cryolysis3.Private.tooltips["Sphere"][3] = L["Conjured Water"]..": "..(Cryolysis3WaterButtonText:GetText() or 0);
+	if Cryolysis3FoodButtonText then
+		Cryolysis3.Private.tooltips["Sphere"][2] = L["Conjured Food"]..": "..(Cryolysis3FoodButtonText:GetText() or 0);
+	end
+	if Cryolysis3WaterButtonText then
+		Cryolysis3.Private.tooltips["Sphere"][3] = L["Conjured Water"]..": "..(Cryolysis3WaterButtonText:GetText() or 0);
+	end
 	Cryolysis3.Private.tooltips["Sphere"][4] = select(1, GetItemInfo(17020))..": "..(GetItemCount(17020) or 0);
 	Cryolysis3.Private.tooltips["Sphere"][5] = select(1, GetItemInfo(17056))..": "..(GetItemCount(17056) or 0);
 	Cryolysis3.Private.tooltips["Sphere"][6] = select(1, GetItemInfo(17031))..": "..(GetItemCount(17031) or 0);
