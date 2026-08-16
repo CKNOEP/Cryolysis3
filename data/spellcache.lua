@@ -199,12 +199,14 @@ function Cryolysis3:HasSpell(spellID)
 		
 		return false;
 	else
-		if (Cryolysis3.spellCache[spellID] == nil) then
-			-- This spell was not in our cache, ergo we don't have it
-			return false;
-		else
-			-- It was, we has it
+		-- Vérifier d'abord dans le cache
+		if (Cryolysis3.spellCache[spellID] ~= nil) then
 			return true;
 		end
+		-- Sinon vérifier si on a le sort en jeu
+		if (IsSpellKnown(spellID)) then
+			return true;
+		end
+		return false;
 	end
 end
