@@ -16,11 +16,17 @@ Cryolysis3.spellCache = {
 -- Function for grabbing all three sets from LPT
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:PopulateSpellList(tbl)
+	local lpt = LibStub("LibPeriodicTable-3.1", true)
+	if not lpt then
+		return
+	end
 	for x, y in pairs(tbl) do
-		for k, v in pairs(LibStub("LibPeriodicTable-3.1"):GetSetTable(y)) do
-
-			if (tonumber(k) ~= nil) then
-				table.insert(Cryolysis3.spellList, -(tonumber(k)));
+		local setTable = lpt:GetSetTable(y)
+		if setTable then
+			for k, v in pairs(setTable) do
+				if (tonumber(k) ~= nil) then
+					table.insert(Cryolysis3.spellList, -(tonumber(k)));
+				end
 			end
 		end
 	end
