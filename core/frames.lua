@@ -62,7 +62,7 @@ function Cryolysis3:CreateFrame(...) -- See Cryolysis3.lua for a demo :)
 	end
 
 	-- Create the font string of the frame
-	local fontstring = frame:CreateFontString(frameName.."Text", frame, "GameFontNormal");
+	local fontstring = frame:CreateFontString(frameName.."Text", "OVERLAY", "GameFontNormal");
 	fontstring:SetPoint("CENTER", frame, "CENTER");
 	fontstring:Show();
 
