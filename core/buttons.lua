@@ -493,7 +493,7 @@ function Cryolysis3:PrepareButton(menuType, name, buttonType, title, left, right
 	local action;
 
 	if (type(title) == "number") then
-		title = Cryolysis3.spellCache[title].name
+		title = Cryolysis3:GetSpellName(title) or tostring(title)
 	end
 	table.insert(tooltip, title);
 
