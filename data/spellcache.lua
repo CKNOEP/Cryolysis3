@@ -9,18 +9,28 @@ local Cryolysis3 = Cryolysis3;
 ------------------------------------------------------------------------------------------------------
 Cryolysis3.spellCache = {
 
-}
+};
 
 
 ------------------------------------------------------------------------------------------------------
 -- Function for grabbing all three sets from LPT
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:PopulateSpellList(tbl)
-	for x, y in pairs(tbl) do
-		for k, v in pairs(LibStub("LibPeriodicTable-3.1"):GetSetTable(y)) do
+	if not tbl then return end
+	
+	local LPT = LibStub and LibStub("LibPeriodicTable-3.1", true)
+	if not LPT or not LPT.GetSetTable then
+		return
+	end
 
-			if (tonumber(k) ~= nil) then
-				table.insert(Cryolysis3.spellList, -(tonumber(k)));
+	for x, y in pairs(tbl) do
+		local success, setTable = pcall(function() return LPT:GetSetTable(y) end)
+		if success and type(setTable) == "table" then
+			for k, v in pairs(setTable) do
+				if (tonumber(k) ~= nil) then
+					Cryolysis3.spellList = Cryolysis3.spellList or {}
+					table.insert(Cryolysis3.spellList, -(tonumber(k)))
+				end
 			end
 		end
 	end
@@ -33,74 +43,49 @@ function Cryolysis3:CacheSpells()
 	-- Temporary table to store spellbook spells
 	local temp = {};
 
-	-- Counter for the spellbook loop
-	local i = 1;
-	
 	if (Cryolysis3.spellList == nil) then
-		-- Ideally, some form of error to be printed to the screen here, as this shouldn't happen
 		return false;
 	end
 
 	-- Loop through entire spellbook
+	local spellBookType = BOOKTYPE_SPELL or "spell"
+	local i = 1;
 	while (true) do
-		-- Get spell name and rank from spell book
-		--local spellName, spellRank = GetSpellName(i, BOOKTYPE_SPELL);
-		local spellName, spellRank, spellID = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+		local spellName, spellSubName, spellID
+		if GetSpellBookItemName then
+			spellName, spellSubName, spellID = GetSpellBookItemName(i, spellBookType)
+		end
 		
 		if not spellName then
-			do break; end
+			break
 		end
 		
-		
-		if (temp[spellName] == nil) then
-			-- GetSpellInfo(spellname) will always return max rank
-			if spellRank == nil then
-			temp[spellName] = spellName;
-			else
-			temp[spellName..spellRank] = spellName..spellRank;
-			temp[spellName] = spellName;		
-			end
-		--print ("temp spell add",spellName,spellRank)
+		temp[spellName] = spellName;
+		if spellSubName and spellSubName ~= "" then
+			temp[spellName..spellSubName] = spellName..spellSubName;
 		end
 		
-		-- Finally increment the counter
 		i = i + 1;
 	end
 	
 	for i = 1, #(Cryolysis3.spellList), 1 do
-	--for i = 1, 100, 1 do
-		--print (Cryolysis3.spellList[i],i)
-		local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(Cryolysis3.spellList[i]);
-		if name == "Invocation de nourriture" then
-		--print(Cryolysis3.spellList[i],":","temp name",temp[name],name, rank, icon, castTime, minRange, maxRange, spellID)
-		end
-		if (name ~= nil) then
-			if (temp[name] ~= nil) then
-				
-				if rank == nil then
-				Cryolysis3.spellCache[Cryolysis3.spellList[i]] = {
-					["name"] = name,
-					["rank"] = rank,
-					["icon"] = icon,
-					["cost"] = cost,
-					["isFunnel"] = isFunnel,
-					["powerType"] = powerType,
-					["castTime"] = castTime,
-					["minRange"] = minRange,
-					["maxRange"] = maxRange
-				}				
-				else
-				Cryolysis3.spellCache[Cryolysis3.spellList[i]] = {
-					["name"] = name,
-					["rank"] = rank,
-					["icon"] = icon,
-					["cost"] = cost,
-					["isFunnel"] = isFunnel,
-					["powerType"] = powerType,
-					["castTime"] = castTime,
-					["minRange"] = minRange,
-					["maxRange"] = maxRange
-				}
+		local spellIdToCheck = Cryolysis3.spellList[i]
+		if spellIdToCheck then
+			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(spellIdToCheck);
+			
+			if (name ~= nil) then
+				if (temp[name] ~= nil) then
+					Cryolysis3.spellCache[spellIdToCheck] = {
+						["name"] = name,
+						["rank"] = rank,
+						["icon"] = icon,
+						["cost"] = 0,
+						["isFunnel"] = false,
+						["powerType"] = 0,
+						["castTime"] = castTime,
+						["minRange"] = minRange,
+						["maxRange"] = maxRange
+					}
 				end
 			end
 		end

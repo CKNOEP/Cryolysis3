@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	English locale needs no translation, durr!
 ]]
 
@@ -236,3 +236,9 @@ L["Saved profile for Cryolysis 3 options"] = true;
 -- Error messages
 ------------------------------------------------------------------------------------------------------
 L["Invalid name, please check your spelling and try again!"] = true;
+
+------------------------------------------------------------------------------------------------------
+-- Debug / Missing entries
+------------------------------------------------------------------------------------------------------
+L["ToDebugString"] = true;
+L["Debug"] = true;

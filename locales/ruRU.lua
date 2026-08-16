@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	Russian translation by StingerSoft!
 ]]
 

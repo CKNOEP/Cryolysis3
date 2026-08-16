@@ -2,69 +2,92 @@
 -- Local variables
 ------------------------------------------------------------------------------------------------------
 local Cryolysis3 = Cryolysis3;
-local module = Cryolysis3:NewModule("MAGE", Cryolysis3.ModuleCore, "AceEvent-3.0")
+local module = Cryolysis3:NewModule("MAGE", Cryolysis3.ModuleCore, "AceEvent-3.0");
 local L = LibStub("AceLocale-3.0"):GetLocale("Cryolysis3");
 local evocHandle = nil;
 local gemHandle = nil;
 
+local function GetSafeItemCooldown(itemID)
+	if not itemID then return 0, 0, 0 end
+	if C_Container and C_Container.GetItemCooldown then
+		return C_Container.GetItemCooldown(itemID)
+	elseif C_Item and C_Item.GetItemCooldown then
+		return C_Item.GetItemCooldown(itemID)
+	elseif GetItemCooldown then
+		return GetItemCooldown(itemID)
+	end
+	return 0, 0, 0
+end
+
+local function SafeSpellName(spellID)
+	if Cryolysis3.spellCache and Cryolysis3.spellCache[spellID] and Cryolysis3.spellCache[spellID].name then
+		return Cryolysis3.spellCache[spellID].name;
+	end
+	return GetSpellInfo(spellID) or "";
+end
+
+local function SafeSpellIcon(spellID)
+	if Cryolysis3.spellCache and Cryolysis3.spellCache[spellID] and Cryolysis3.spellCache[spellID].icon then
+		return Cryolysis3.spellCache[spellID].icon;
+	end
+	return select(3, GetSpellInfo(spellID));
+end
 
 ------------------------------------------------------------------------------------------------------
 -- Function to update the cooldown on Evocation
 ------------------------------------------------------------------------------------------------------
 local function UpdateEvocation()
-	-- Get cooldown data
-	local start, duration, enabled = GetSpellCooldown(Cryolysis3.spellCache[12051].name);
+	local spellName = SafeSpellName(12051);
+	if not spellName or spellName == "" then return end
+
+	local start, duration, enabled = GetSpellCooldown(spellName);
 		
 	if (duration == 0) then
-		-- Spell is not on cooldown
 		if (evocHandle ~= nil) then
-			-- We had a timer enabled, cancel it
 			Cryolysis3:CancelTimer(evocHandle);
 			evocHandle = nil;
 		end
 		
-		-- Liven up the button
-		Cryolysis3EvocationButton.texture:SetDesaturated(false);
+		if Cryolysis3EvocationButton and Cryolysis3EvocationButton.texture then
+			Cryolysis3EvocationButton.texture:SetDesaturated(false);
+		end
 		
-		-- Remove text from button
-		Cryolysis3EvocationButtonText:SetText(nil);
+		if Cryolysis3EvocationButtonText then
+			Cryolysis3EvocationButtonText:SetText(nil);
+		end
 		
-		-- Insert tooltip data saying its ready
-		Cryolysis3.Private.tooltips["EvocationButton"][2] = L["Ready"];
+		if Cryolysis3.Private.tooltips["EvocationButton"] then
+			Cryolysis3.Private.tooltips["EvocationButton"][2] = L["Ready"];
+		end
 	else
-		-- Spell is on cooldown
 		if (evocHandle == nil) then
 			evocHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateEvocation, 1);
 		end
 		
-		-- Gray out the button
-		Cryolysis3EvocationButton.texture:SetDesaturated(true);
+		if Cryolysis3EvocationButton and Cryolysis3EvocationButton.texture then
+			Cryolysis3EvocationButton.texture:SetDesaturated(true);
+		end
 		
-		-- Get timer data
 		local timeleft = Cryolysis3:TimerData(start, duration);
 		
 		if (timeleft.minutes > 0) then
-			-- Insert tooltip data with minutes
-			Cryolysis3.Private.tooltips["EvocationButton"][2] = timeleft.minutes.." "..L["minutes"]..", "..timeleft.seconds.." "..L["seconds"];
+			if Cryolysis3.Private.tooltips["EvocationButton"] then
+				Cryolysis3.Private.tooltips["EvocationButton"][2] = timeleft.minutes.." "..L["minutes"]..", "..timeleft.seconds.." "..L["seconds"];
+			end
 			
-			-- If show cooldown is enabled
-			if (Cryolysis3.db.char.buttonText["EvocationButton"]) then
-				-- Write remaining time on the button
+			if (Cryolysis3.db.char.buttonText["EvocationButton"]) and Cryolysis3EvocationButtonText then
 				Cryolysis3EvocationButtonText:SetText(timeleft.minutes..":"..timeleft.seconds);
-			else
-				--Blank out the text
+			elseif Cryolysis3EvocationButtonText then
 				Cryolysis3EvocationButtonText:SetText(nil);
 			end
 		else
-			-- Insert tooltip data without minutes
-			Cryolysis3.Private.tooltips["EvocationButton"][2] =  timeleft.seconds.." "..L["seconds"];
+			if Cryolysis3.Private.tooltips["EvocationButton"] then
+				Cryolysis3.Private.tooltips["EvocationButton"][2] =  timeleft.seconds.." "..L["seconds"];
+			end
 			
-			--If show cooldown is enabled
-			if (Cryolysis3.db.char.buttonText["EvocationButton"]) then
-				-- Write remaining time on the button			
+			if (Cryolysis3.db.char.buttonText["EvocationButton"]) and Cryolysis3EvocationButtonText then
 				Cryolysis3EvocationButtonText:SetText(timeleft.seconds);
-			else
-				--Blank out the text
+			elseif Cryolysis3EvocationButtonText then
 				Cryolysis3EvocationButtonText:SetText(nil);
 			end
 		end
@@ -75,57 +98,54 @@ end
 -- Function to update the cooldown on Mana Gem
 ------------------------------------------------------------------------------------------------------
 local function UpdateManaGem()
-	local start, duration, enabled = GetItemCooldown(Cryolysis3.Private.manaGem)
-	if (duration == 0) then
-		-- Spell is not on cooldown
+	if not Cryolysis3.Private.manaGem then return end
+	local start, duration, enabled = GetSafeItemCooldown(Cryolysis3.Private.manaGem);
+	if not duration or duration == 0 then
 		if (gemHandle ~= nil) then
-			-- We had a timer enabled, cancel it
 			Cryolysis3:CancelTimer(gemHandle);
 			gemHandle = nil;
 		end
 		
-		-- Liven up the button
-		Cryolysis3GemButton.texture:SetDesaturated(false);
-		
-		-- Remove text from button
-		Cryolysis3GemButtonText:SetText(nil);
-		
-		-- Insert tooltip data saying its ready
-		Cryolysis3.Private.tooltips["GemButton"][4] = L["Ready"];
-	else	
-		-- Spell is on cooldown
-		if (evocHandle == nil) then
-			evocHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateManaGem, 1);
+		if Cryolysis3GemButton and Cryolysis3GemButton.texture then
+			Cryolysis3GemButton.texture:SetDesaturated(false);
 		end
 		
-		-- Gray out the button
-		Cryolysis3GemButton.texture:SetDesaturated(true);
+		if Cryolysis3GemButtonText then
+			Cryolysis3GemButtonText:SetText(nil);
+		end
 		
-		-- Get timer data
+		if Cryolysis3.Private.tooltips["GemButton"] then
+			Cryolysis3.Private.tooltips["GemButton"][4] = L["Ready"];
+		end
+	else	
+		if (gemHandle == nil) then
+			gemHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateManaGem, 1);
+		end
+		
+		if Cryolysis3GemButton and Cryolysis3GemButton.texture then
+			Cryolysis3GemButton.texture:SetDesaturated(true);
+		end
+		
 		local timeleft = Cryolysis3:TimerData(start, duration);
 		
-		if (timeleft.minutes > 0) then
-			-- Insert tooltip data with minutes
-			Cryolysis3.Private.tooltips["GemButton"][4] = timeleft.minutes.." "..L["minutes"]..", "..timeleft.seconds.." "..L["seconds"];
+		if timeleft and timeleft.minutes and timeleft.minutes > 0 then
+			if Cryolysis3.Private.tooltips["GemButton"] then
+				Cryolysis3.Private.tooltips["GemButton"][4] = timeleft.minutes.." "..L["minutes"]..", "..timeleft.seconds.." "..L["seconds"];
+			end
 			
-			-- If show cooldown is enabled
-			if (Cryolysis3.db.char.buttonText["GemButton"]) then
-				-- Write remaining time on the button
+			if (Cryolysis3.db.char.buttonText["GemButton"]) and Cryolysis3GemButtonText then
 				Cryolysis3GemButtonText:SetText(timeleft.minutes..":"..timeleft.seconds);
-			else
-				--Blank out the text
+			elseif Cryolysis3GemButtonText then
 				Cryolysis3GemButtonText:SetText(nil);
 			end
-		else
-			-- Insert tooltip data without minutes
-			Cryolysis3.Private.tooltips["GemButton"][4] =  timeleft.seconds.." "..L["seconds"];
+		elseif timeleft and timeleft.seconds then
+			if Cryolysis3.Private.tooltips["GemButton"] then
+				Cryolysis3.Private.tooltips["GemButton"][4] =  timeleft.seconds.." "..L["seconds"];
+			end
 			
-			--If show cooldown is enabled
-			if (Cryolysis3.db.char.buttonText["GemButton"]) then
-				-- Write remaining time on the button			
+			if (Cryolysis3.db.char.buttonText["GemButton"]) and Cryolysis3GemButtonText then
 				Cryolysis3GemButtonText:SetText(timeleft.seconds);
-			else
-				--Blank out the text
+			elseif Cryolysis3GemButtonText then
 				Cryolysis3GemButtonText:SetText(nil);
 			end
 		end
@@ -136,15 +156,10 @@ end
 -- Function to fetch lookup table to be used in :UpdateItemCount
 ------------------------------------------------------------------------------------------------------
 local function GetLookupTable(name)
-	--print ("name",name)
-	-- Lookup table for conjure spell id -> item id
 	if (name == "water") then
 		return {
-			-- Normal ranks of Water
-			--[42956] = 43523,--Strudel de manne invoqué
-			--[42955] = 43518,
-			[27090]	= 22018,--Eau des glaciers invoquée
-			[37420]	= 30703,--eau-de-source-des-montagnes-invoquée
+			[27090]	= 22018,
+			[37420]	= 30703,
 			[10140]	= 8079,
 			[10139]	= 8078,
 			[10138]	= 8077,
@@ -153,12 +168,8 @@ local function GetLookupTable(name)
 			[5505]	= 2288,
 			[5504]	= 5350,
 		};
-		
 	elseif (name == "food") then
 		return {			
-			-- Normal ranks of Food
-			--[42956] = 43523,
-			--[42955] = 43518,
 			[33717]	= 22019,
 			[28612]	= 22895,
 			[10145]	= 8076,
@@ -168,9 +179,8 @@ local function GetLookupTable(name)
 			[597]	= 1113,
 			[587]	= 5349,
 		};
-	elseif (name == "gem") then  --This should be changed to show the number of charges available for mana emerald, but we have to wait for Blizz to add the ItemChargeCount function...:(
+	elseif (name == "gem") then
 		return {
-			--[42985]	= 33312,
 			[27101]	= 22044,
 			[10054]	= 8008,
 			[10053]	= 8007,
@@ -194,31 +204,19 @@ end
 -- Update sphere
 ------------------------------------------------------------------------------------------------------
 local function UpdateSphereTooltip()
-	Cryolysis3.Private.tooltips["Sphere"][2] = L["Conjured Food"]..": "..(Cryolysis3FoodButtonText:GetText() or 0);
-	Cryolysis3.Private.tooltips["Sphere"][3] = L["Conjured Water"]..": "..(Cryolysis3WaterButtonText:GetText() or 0);
-	Cryolysis3.Private.tooltips["Sphere"][4] = select(1, GetItemInfo(17020))..": "..(GetItemCount(17020) or 0);
-	Cryolysis3.Private.tooltips["Sphere"][5] = select(1, GetItemInfo(17056))..": "..(GetItemCount(17056) or 0);
-	Cryolysis3.Private.tooltips["Sphere"][6] = select(1, GetItemInfo(17031))..": "..(GetItemCount(17031) or 0);
-	Cryolysis3.Private.tooltips["Sphere"][7] = select(1, GetItemInfo(17032))..": "..(GetItemCount(17032) or 0);
-end
-
-
-------------------------------------------------------------------------------------------------------
--- Function to generate options
-------------------------------------------------------------------------------------------------------
-function module:CreateOptions()
-	-- The option to shut off this module
-	local options = {
-	}
-	
-	return options;
+	if not Cryolysis3.Private.tooltips["Sphere"] then return end
+	Cryolysis3.Private.tooltips["Sphere"][2] = L["Conjured Food"]..": "..((Cryolysis3FoodButtonText and Cryolysis3FoodButtonText:GetText()) or 0);
+	Cryolysis3.Private.tooltips["Sphere"][3] = L["Conjured Water"]..": "..((Cryolysis3WaterButtonText and Cryolysis3WaterButtonText:GetText()) or 0);
+	Cryolysis3.Private.tooltips["Sphere"][4] = (select(1, GetItemInfo(17020)) or "Arcane Powder")..": "..(GetItemCount(17020) or 0);
+	Cryolysis3.Private.tooltips["Sphere"][5] = (select(1, GetItemInfo(17056)) or "Light Feather")..": "..(GetItemCount(17056) or 0);
+	Cryolysis3.Private.tooltips["Sphere"][6] = (select(1, GetItemInfo(17031)) or "Rune of Teleportation")..": "..(GetItemCount(17031) or 0);
+	Cryolysis3.Private.tooltips["Sphere"][7] = (select(1, GetItemInfo(17032)) or "Rune of Portals")..": "..(GetItemCount(17032) or 0);
 end
 
 ------------------------------------------------------------------------------------------------------
 -- Function to generate configuration options
 ------------------------------------------------------------------------------------------------------
 function module:CreateConfigOptions()
-	-- The various configurations this module produces
 	local configOptions = {
 		type = "group",
 		name = gsub(UnitClass("player"), "^.", function(s) return s:upper() end),
@@ -226,7 +224,7 @@ function module:CreateConfigOptions()
 		args = {
 			evocationbutton = {
 				type = "group",
-				name = GetSpellInfo(12051),
+				name = GetSpellInfo(12051) or "Evocation",
 				desc = L["Adjust various settings for this button."],
 				order = 30,
 				args = {
@@ -266,7 +264,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["EvocationButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["EvocationButton"] = v;
-							Cryolysis3:UpdateScale("button", "EvocationButton", v)
+							Cryolysis3:UpdateScale("button", "EvocationButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -300,8 +298,8 @@ function module:CreateConfigOptions()
 						desc = L["Adjust which way this menu grows"],
 						get = function(info) return Cryolysis3.db.char.menuButtonGrowth["BuffButton"] end,
 						set = function(info, v) 
-							Cryolysis3.db.char.menuButtonGrowth["BuffButton"] = v
-							Cryolysis3:PositionMenuItems("BuffButton", v)
+							Cryolysis3.db.char.menuButtonGrowth["BuffButton"] = v;
+							Cryolysis3:PositionMenuItems("BuffButton", v);
 						end,
 						values = {L["Up"], L["Right"], L["Down"], L["Left"]},
 						order = 15
@@ -321,7 +319,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["BuffButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["BuffButton"] = v;
-							Cryolysis3:UpdateScale("button", "BuffButton", v)
+							Cryolysis3:UpdateScale("button", "BuffButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -355,8 +353,8 @@ function module:CreateConfigOptions()
 						desc = L["Adjust which way this menu grows"],
 						get = function(info) return Cryolysis3.db.char.menuButtonGrowth["PortalButton"] end,
 						set = function(info, v) 
-							Cryolysis3.db.char.menuButtonGrowth["PortalButton"] = v
-							Cryolysis3:PositionMenuItems("PortalButton", v)
+							Cryolysis3.db.char.menuButtonGrowth["PortalButton"] = v;
+							Cryolysis3:PositionMenuItems("PortalButton", v);
 						end,
 						values = {L["Up"], L["Right"], L["Down"], L["Left"]},
 						order = 15
@@ -376,7 +374,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["PortalButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["PortalButton"] = v;
-							Cryolysis3:UpdateScale("button", "PortalButton", v)
+							Cryolysis3:UpdateScale("button", "PortalButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -431,7 +429,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["FoodButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["FoodButton"] = v;
-							Cryolysis3:UpdateScale("button", "FoodButton", v)
+							Cryolysis3:UpdateScale("button", "FoodButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -486,7 +484,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["WaterButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["WaterButton"] = v;
-							Cryolysis3:UpdateScale("button", "WaterButton", v)
+							Cryolysis3:UpdateScale("button", "WaterButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -538,7 +536,7 @@ function module:CreateConfigOptions()
 						get = function(info) return Cryolysis3.db.char.scale.button["GemButton"]; end,
 						set = function(info, v) 
 							Cryolysis3.db.char.scale.button["GemButton"] = v;
-							Cryolysis3:UpdateScale("button", "GemButton", v)
+							Cryolysis3:UpdateScale("button", "GemButton", v);
 						end,
 						min = .5,
 						max = 2,
@@ -549,7 +547,7 @@ function module:CreateConfigOptions()
 				}
 			},
 		}
-	}
+	};
 		
 	return configOptions;
 end
@@ -558,38 +556,24 @@ end
 -- What happens when the module is initialised
 ------------------------------------------------------------------------------------------------------
 function module:OnInitialize()
-	-- Register our options with the global array
-	--module:RegisterOptions(options);
-	
-	if (select(2,UnitClass("player")) == "MAGE") then
-		-- Start table counter
+	if (select(2, UnitClass("player")) == "MAGE") then
 		local i = 1;
 
 		for k, v in pairs(GetLookupTable("water")) do
-			-- Add Water items to cache
 			Cryolysis3.Private.cacheList[i] = v;
-			
-			-- Increment our table counter
 			i = i + 1;
 		end
 
 		for k, v in pairs(GetLookupTable("food")) do
-			-- Add Food items to cache
 			Cryolysis3.Private.cacheList[i] = v;
-			
-			-- Increment our table counter
 			i = i + 1;
 		end
 
 		for k, v in pairs(GetLookupTable("gem")) do
-			-- Add Gem items to cache
 			Cryolysis3.Private.cacheList[i] = v;
-			
-			-- Increment our table counter
 			i = i + 1;
 		end
 		
-		-- Add static items to the cache
 		Cryolysis3.Private.cacheList[i] = 17020; i = i + 1; -- Arcane Powder
 		Cryolysis3.Private.cacheList[i] = 17031; i = i + 1; -- Rune of Teleportation
 		Cryolysis3.Private.cacheList[i] = 17032; i = i + 1; -- Rune of Portals
@@ -601,26 +585,22 @@ end
 -- What happens when the module is enabled
 ------------------------------------------------------------------------------------------------------
 function module:OnEnable()	
-	-- And we're live!
-	-- Set the default skin
 	Cryolysis3:SetDefaultSkin("Blue");
 	
-	-- Create a list of the mage's spells to be cached
-	Cryolysis3.spellList = {};
+	Cryolysis3.spellList = Cryolysis3.spellList or {};
 	
-	-- Local table of the LPT sets we will be using
-	local t = {
-		"ClassSpell.Mage.Arcane",
-		"ClassSpell.Mage.Fire",
-		"ClassSpell.Mage.Frost"
+	local defaultMageSpells = {
+		12051, 168, 7302, 6117, 30482, 1459, 23028, 604, 1008, 1463, 11426, 543, 6143, 475, 130,
+		3562, 11416, 3561, 10059, 3565, 11419, 32271, 32266, 49359, 49360, 33690, 33691, 53140, 53142,
+		3567, 11417, 3563, 11418, 3566, 11420, 32272, 32267, 49358, 49361, 35715, 35717,
+		27090, 37420, 10140, 10139, 10138, 6127, 5506, 5505, 5504,
+		33717, 28612, 10145, 10144, 6129, 990, 597, 587,
+		27101, 10054, 10053, 3552, 759, 43987
 	};
-	
-	-- Create spellList
-	
-	Cryolysis3:PopulateSpellList(t);
+	for _, spellID in ipairs(defaultMageSpells) do
+		table.insert(Cryolysis3.spellList, spellID);
+	end
 
-	-- Add talent spellds
-	--table.insert(Cryolysis3.spellList, 44425); -- Arcane Barrage
 	table.insert(Cryolysis3.spellList, 11113); -- Blast Wave
 	table.insert(Cryolysis3.spellList, 11958); -- Cold Snap
 	table.insert(Cryolysis3.spellList, 11129); -- Combustion
@@ -634,10 +614,7 @@ function module:OnEnable()
 	table.insert(Cryolysis3.spellList, 31589); -- Slow
 	table.insert(Cryolysis3.spellList, 31687); -- Summon Water Elemental
 	
-	-- Insert our config options
 	module:RegisterConfigOptions(module:CreateConfigOptions());
-	
-	-- Register our wanted events
 	module:RegisterClassEvents();
 end
 
@@ -653,402 +630,282 @@ end
 ------------------------------------------------------------------------------------------------------
 function module:CreateReagentList()
 	local reagentList = {
-		-- Arcane Brilliance and Ritual of Refreshment reagents
 		["Arcane Powder"]		= 17020,
-		
-		-- Teleport reagents
 		["Rune of Teleportation"]	= 17031,
-		
-		-- Portal reagents
 		["Rune of Portals"]		= 17032,
-	}
+	};
 	
-	-- Check for Arcane Brilliance or Ritual of Refreshment
 	if (Cryolysis3:HasSpell(23028) or Cryolysis3:HasSpell(43987)) then
-		if (Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Arcane Powder"])] == nil) then
-			-- Default Arcane Powder restock amount
-			Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Arcane Powder"])] = 20;
+		local itemName = GetItemInfo(reagentList["Arcane Powder"]) or "Arcane Powder";
+		if (Cryolysis3.db.char.RestockQuantity[itemName] == nil) then
+			Cryolysis3.db.char.RestockQuantity[itemName] = 20;
 		end
-		
-		-- Add this to our list of restockable reagents
 		Cryolysis3.Private.classReagents["Arcane Powder"] = reagentList["Arcane Powder"];
-
-		-- We're in need of reagents
 		Cryolysis3.Private.hasReagents = true;
 	end
 	
-	-- Check for Teleport
 	if (Cryolysis3:HasSpell("Teleport")) then
-		if (Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Rune of Teleportation"])] == nil) then
-			-- Default Rune of Teleportation restock amount
-			Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Rune of Teleportation"])] = 10;
+		local itemName = GetItemInfo(reagentList["Rune of Teleportation"]) or "Rune of Teleportation";
+		if (Cryolysis3.db.char.RestockQuantity[itemName] == nil) then
+			Cryolysis3.db.char.RestockQuantity[itemName] = 10;
 		end
-		
-		-- Add this to our list of restockable reagents
 		Cryolysis3.Private.classReagents["Rune of Teleportation"] = reagentList["Rune of Teleportation"];
-
-		-- We're in need of reagents
 		Cryolysis3.Private.hasReagents = true;
 	end
 	
-	-- Check for Portal	
 	if (Cryolysis3:HasSpell("Portal")) then
-		if (Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Rune of Portals"])] == nil) then
-			-- Default Rune of Portals restock amount
-			Cryolysis3.db.char.RestockQuantity[GetItemInfo(reagentList["Rune of Portals"])] = 10;
+		local itemName = GetItemInfo(reagentList["Rune of Portals"]) or "Rune of Portals";
+		if (Cryolysis3.db.char.RestockQuantity[itemName] == nil) then
+			Cryolysis3.db.char.RestockQuantity[itemName] = 10;
 		end
-		
-		-- Add this to our list of restockable reagents
 		Cryolysis3.Private.classReagents["Rune of Portals"] = reagentList["Rune of Portals"];
-
-		-- We're in need of reagents
 		Cryolysis3.Private.hasReagents = true;
 	end	
-	
 end
 
 ------------------------------------------------------------------------------------------------------
 -- Function for creating all the buttons used by this class
 ------------------------------------------------------------------------------------------------------
 function module:CreateButtons()
-	
-	--print ('creation button')
 	if (Cryolysis3:HasSpell(12051)) then
-		-- We has an Evocation, create and set up the button for it
-		Cryolysis3:CreateButton("EvocationButton", UIParent, Cryolysis3.spellCache[12051].icon);
+		Cryolysis3:CreateButton("EvocationButton", UIParent, SafeSpellIcon(12051));
 		
-		-- Start tooltip data
 		Cryolysis3.Private.tooltips["EvocationButton"] = {};
-
-		-- Start adding tooltip data
-		table.insert(Cryolysis3.Private.tooltips["EvocationButton"], Cryolysis3.spellCache[12051].name);
+		table.insert(Cryolysis3.Private.tooltips["EvocationButton"], SafeSpellName(12051));
 		
-		-- Set Evocation button action
 		Cryolysis3.db.char.buttonTypes["EvocationButton"] = "spell";
 		Cryolysis3.db.char.buttonFunctions["EvocationButton"] = {};
 		Cryolysis3.db.char.buttonFunctions["EvocationButton"]["left"] = 12051;
 
-		-- Update all actions
 		Cryolysis3:UpdateButton("EvocationButton", "left");
-
-		-- Update Evocation cooldown
 		UpdateEvocation();
 	end
 	
-	-- Lookup table for conjure spell id -> item id
 	local foodLookupTable = GetLookupTable("food");
 	local waterLookupTable = GetLookupTable("water");
 	local gemLookupTable = GetLookupTable("gem");
 	
-	-- Check for highest rank of food
 	local foodID = Cryolysis3:GetHighestRank(foodLookupTable, "food");
-	--foodID = 33717 -- croissant
-	--print ("foodID",foodLookupTable,foodID)
-	-- Check for highest rank of water
 	local waterID = Cryolysis3:GetHighestRank(waterLookupTable, "water");
-
-	-- Check for highest rank of gem
 	local gemID = Cryolysis3:GetHighestRank(gemLookupTable, "gem");
 
-	if (foodID ~= nil ) then
-		Cryolysis3:CreateButton("FoodButton",	UIParent,	select(3, GetSpellInfo(foodID)));
+	if (foodID ~= nil) then
+		Cryolysis3:CreateButton("FoodButton", UIParent, SafeSpellIcon(foodID));
 		Cryolysis3.Private.tooltips["FoodButton"] = {};
 		
-		local foodName = GetItemInfo(foodLookupTable[foodID]);
-		if (foodName == nil) then
-			foodName = Cryolysis3.spellCache[foodID].name;
-		end
-		table.insert(Cryolysis3.Private.tooltips["FoodButton"],	Cryolysis3.spellCache[foodID].name);
-		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	foodName));
-		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[foodID].name));
+		local foodName = GetItemInfo(foodLookupTable[foodID]) or SafeSpellName(foodID);
+		table.insert(Cryolysis3.Private.tooltips["FoodButton"], SafeSpellName(foodID));
+		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], foodName));
+		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], SafeSpellName(foodID)));
 		
-		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["FoodButton"] = {};
-		Cryolysis3.db.char.buttonTypes["FoodButton"] = "macrotext";
-		Cryolysis3.db.char.buttonFunctions["FoodButton"].left = "/use "..foodName;
-		Cryolysis3.db.char.buttonFunctions["FoodButton"].right = "/cast "..Cryolysis3.spellCache[foodID].name;
+		Cryolysis3.db.char.buttonFunctions["FoodButton"]["left"] = "/use " .. foodName;
+		Cryolysis3.db.char.buttonFunctions["FoodButton"]["right"] = "/cast " .. SafeSpellName(foodID);
 	
-		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
-			table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
-			Cryolysis3.db.char.buttonFunctions["FoodButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
+		if (Cryolysis3:HasSpell(43987)) then
+			table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Middle"], L["cast"], SafeSpellName(43987)));
+			Cryolysis3.db.char.buttonFunctions["FoodButton"]["middle"] = "/cast " .. SafeSpellName(43987);
 		end
 		
-		Cryolysis3:UpdateAllButtonAttributes("FoodButton");
+		Cryolysis3:UpdateButton("FoodButton", "left");
+		Cryolysis3:UpdateButton("FoodButton", "right");
+		Cryolysis3:UpdateButton("FoodButton", "middle");
 	end
 
-	if (waterID ~= nil ) then
-		Cryolysis3:CreateButton("WaterButton",	UIParent,	select(3, GetSpellInfo(waterID)));
+	-- Блок WaterButton
+	if (waterID ~= nil) then
+		Cryolysis3:CreateButton("WaterButton", UIParent, SafeSpellIcon(waterID));
 		Cryolysis3.Private.tooltips["WaterButton"] = {};
 		
-		local waterName = GetItemInfo(waterLookupTable[waterID]);
-		if (waterName == nil) then
-			waterName = Cryolysis3.spellCache[waterID].name;
-		end
-		table.insert(Cryolysis3.Private.tooltips["WaterButton"], Cryolysis3.spellCache[waterID].name);
-		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	waterName));
-		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[waterID].name));
+		local waterName = GetItemInfo(waterLookupTable[waterID]) or SafeSpellName(waterID);
+		table.insert(Cryolysis3.Private.tooltips["WaterButton"], SafeSpellName(waterID));
+		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], waterName));
+		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], SafeSpellName(waterID)));
 		
-		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["WaterButton"] = {};
-		Cryolysis3.db.char.buttonTypes["WaterButton"] = "macrotext";
-		Cryolysis3.db.char.buttonFunctions["WaterButton"].left = "/use "..waterName;
-		Cryolysis3.db.char.buttonFunctions["WaterButton"].right = "/cast "..Cryolysis3.spellCache[waterID].name;
+		Cryolysis3.db.char.buttonFunctions["WaterButton"]["left"] = "/use " .. waterName;
+		Cryolysis3.db.char.buttonFunctions["WaterButton"]["right"] = "/cast " .. SafeSpellName(waterID);
 
-		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
-			table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
-			Cryolysis3.db.char.buttonFunctions["WaterButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
+		if (Cryolysis3:HasSpell(43987)) then
+			table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Middle"], L["cast"], SafeSpellName(43987)));
+			Cryolysis3.db.char.buttonFunctions["WaterButton"]["middle"] = "/cast " .. SafeSpellName(43987);
 		end
 		
-		Cryolysis3:UpdateAllButtonAttributes("WaterButton");
+		Cryolysis3:UpdateButton("WaterButton", "left");
+		Cryolysis3:UpdateButton("WaterButton", "right");
+		Cryolysis3:UpdateButton("WaterButton", "middle");
 	end
 
 	if (gemID ~= nil) then
 		Cryolysis3.Private.manaGem = gemLookupTable[gemID];
 
-		Cryolysis3:CreateButton("GemButton",	UIParent,	select(3, GetSpellInfo(gemID)));
+		Cryolysis3:CreateButton("GemButton", UIParent, SafeSpellIcon(gemID));
 		Cryolysis3.Private.tooltips["GemButton"] = {};
 		
-		local gemName = GetItemInfo(gemLookupTable[gemID]);
-		if (gemName == nil) then
-			gemName = Cryolysis3.spellCache[gemID].name;
-		end
-		table.insert(Cryolysis3.Private.tooltips["GemButton"], Cryolysis3.spellCache[gemID].name);
-		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	gemName));
-		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[gemID].name));
+		local gemName = GetItemInfo(gemLookupTable[gemID]) or SafeSpellName(gemID);
+		table.insert(Cryolysis3.Private.tooltips["GemButton"], SafeSpellName(gemID));
+		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], gemName));
+		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], SafeSpellName(gemID)));
 		
-		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["GemButton"] = {};
 		Cryolysis3.db.char.buttonTypes["GemButton"] = "macrotext";
-		Cryolysis3.db.char.buttonFunctions["GemButton"].left = "/use "..gemName;
-		Cryolysis3.db.char.buttonFunctions["GemButton"].right = "/cast "..Cryolysis3.spellCache[gemID].name;
+		Cryolysis3.db.char.buttonFunctions["GemButton"]["left"] = "/use " .. gemName;
+		Cryolysis3.db.char.buttonFunctions["GemButton"]["right"] = "/cast " .. SafeSpellName(gemID);
 		
-		Cryolysis3:UpdateAllButtonAttributes("GemButton");
-		
-		-- Update Mana Gem cooldown
+		Cryolysis3:UpdateButton("GemButton", "left");
+		Cryolysis3:UpdateButton("GemButton", "right");
+		Cryolysis3:UpdateButton("GemButton", "middle");
 		UpdateManaGem();
 	end
 
-
-	-- Start tooltip data
 	Cryolysis3.Private.tooltips["BuffButton"] = {};
 	Cryolysis3.Private.tooltips["PortalButton"] = {};
 	
-	-- Start adding tooltip data
-	table.insert(Cryolysis3.Private.tooltips["BuffButton"],		L["Buff Menu"]);
-	table.insert(Cryolysis3.Private.tooltips["BuffButton"],		L["Click to open menu."]);
-	table.insert(Cryolysis3.Private.tooltips["PortalButton"],	L["Teleport/Portal"]);
-	table.insert(Cryolysis3.Private.tooltips["PortalButton"],	L["Click to open menu."]);
+	table.insert(Cryolysis3.Private.tooltips["BuffButton"], L["Buff Menu"]);
+	table.insert(Cryolysis3.Private.tooltips["BuffButton"], L["Click to open menu."]);
+	table.insert(Cryolysis3.Private.tooltips["PortalButton"], L["Teleport/Portal"]);
+	table.insert(Cryolysis3.Private.tooltips["PortalButton"], L["Click to open menu."]);
 	
 	local tooltip = {};
 	local hasBuff = false;
 	local hasTelePort = false;
 
-	-- Buff menu buttons
 	if (Cryolysis3:HasSpell(168) or Cryolysis3:HasSpell(7302) or Cryolysis3:HasSpell(6117) or Cryolysis3:HasSpell(30482)) then
-		-- (Frost/Ice)/Mage/Molten Armor
 		local frostIce = 7302;
 		if (Cryolysis3:HasSpell(168) and not Cryolysis3:HasSpell(7302)) then
-			-- We have Frost Armor but not Ice Armor
 			frostIce = 168;
 		end
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Armor", "spell", L["Armor"], frostIce, 6117, 30482);
-		Cryolysis3:AddMenuItem("BuffButton", "Armor", select(3, GetSpellInfo(7302)), tooltip);
-
+		Cryolysis3:AddMenuItem("BuffButton", "Armor", SafeSpellIcon(7302) or SafeSpellIcon(168), tooltip);
 		hasBuff = true;
 	end
 
-	-- Intellect buttons
 	if (Cryolysis3:HasSpell(1459) or Cryolysis3:HasSpell(23028)) then
-		-- Arcane Intellect/Brilliance
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Intellect", "spell", L["Intellect"], 1459, 23028);
-		Cryolysis3:AddMenuItem("BuffButton", "Intellect", select(3, GetSpellInfo(1459)), tooltip);
-		
+		Cryolysis3:AddMenuItem("BuffButton", "Intellect", SafeSpellIcon(1459), tooltip);
 		hasBuff = true;
 	end
 
-	-- Dalaran Intellect buttons, included in case people like both
 	if (Cryolysis3:HasSpell(61024) or Cryolysis3:HasSpell(61316)) then
-		-- Arcane Intellect/Brilliance
 		tooltip = Cryolysis3:PrepareButton("BuffButton2", "Intellect2", "spell", L["Intellect"], 61024, 61316);
-		Cryolysis3:AddMenuItem("BuffButton2", "Intellect2", select(3, GetSpellInfo(61024)), tooltip);
-		
+		Cryolysis3:AddMenuItem("BuffButton2", "Intellect2", SafeSpellIcon(61024), tooltip);
 		hasBuff = true;
 	end
 
-	-- Magic buttons
 	if (Cryolysis3:HasSpell(604) or Cryolysis3:HasSpell(1008)) then
-		-- Dampen/Amplify Magic
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Magic", "spell", L["Magic"], 604, 1008);
-		Cryolysis3:AddMenuItem("BuffButton", "Magic", select(3, GetSpellInfo(604)), tooltip);
-
+		Cryolysis3:AddMenuItem("BuffButton", "Magic", SafeSpellIcon(604), tooltip);
 		hasBuff = true;
 	end
 
-	-- Damage Shields buttons
 	if (Cryolysis3:HasSpell(1463) or Cryolysis3:HasSpell(11426)) then
-		-- Mana Shield/Ice Barrier
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Shields", "spell", L["Damage Shields"], 1463, 11426);
-		Cryolysis3:AddMenuItem("BuffButton", "Shields", select(3, GetSpellInfo(1463)), tooltip);
-
+		Cryolysis3:AddMenuItem("BuffButton", "Shields", SafeSpellIcon(1463), tooltip);
 		hasBuff = true;
 	end
 
-	-- Wards buttons
 	if (Cryolysis3:HasSpell(543) or Cryolysis3:HasSpell(6143)) then
-		-- Fire/Frost Ward
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Wards", "spell", L["Magical Wards"], 543, 6143);
-		Cryolysis3:AddMenuItem("BuffButton", "Wards", select(3, GetSpellInfo(543)), tooltip);
-
+		Cryolysis3:AddMenuItem("BuffButton", "Wards", SafeSpellIcon(543), tooltip);
 		hasBuff = true;
 	end
 
-	-- Remove Curse buttons
 	if (Cryolysis3:HasSpell(475)) then
-		-- Remove Curse
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "Curse", "spell", 475, 475);
-		Cryolysis3:AddMenuItem("BuffButton", "Curse", select(3, GetSpellInfo(475)), tooltip);
-
+		Cryolysis3:AddMenuItem("BuffButton", "Curse", SafeSpellIcon(475), tooltip);
 		hasBuff = true;
 	end
 
-	-- Slow Fall buttons
 	if (Cryolysis3:HasSpell(130)) then
-		-- Slow Fall
 		tooltip = Cryolysis3:PrepareButton("BuffButton", "SlowFall", "spell", 130, 130);
-		Cryolysis3:AddMenuItem("BuffButton", "SlowFall", select(3, GetSpellInfo(130)), tooltip);
+		Cryolysis3:AddMenuItem("BuffButton", "SlowFall", SafeSpellIcon(130), tooltip);
 		Cryolysis3.db.char.buttonText["BuffButtonSlowFall"] = true;
-
 		hasBuff = true;
 	end
 
 	if (Cryolysis3.Private.englishFaction == "Alliance") then
 		if (Cryolysis3:HasSpell(3562) or Cryolysis3:HasSpell(11416)) then
-			-- Ironforge
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Ironforge", "spell", 3562, 3562, 11416);
-			Cryolysis3:AddMenuItem("PortalButton", "Ironforge", select(3, GetSpellInfo(3562)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Ironforge", SafeSpellIcon(3562), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(3561) or Cryolysis3:HasSpell(10059)) then
-			-- Stormwind
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Stormwind", "spell", 3561, 3561, 10059);
-			Cryolysis3:AddMenuItem("PortalButton", "Stormwind", select(3, GetSpellInfo(3561)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Stormwind", SafeSpellIcon(3561), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(3565) or Cryolysis3:HasSpell(11419)) then
-			-- Darnassus
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Darnassus", "spell", 3565, 3565, 11419);
-			Cryolysis3:AddMenuItem("PortalButton", "Darnassus", select(3, GetSpellInfo(3565)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Darnassus", SafeSpellIcon(3565), tooltip);
 			hasTelePort = true;
 		end
-
 		if (Cryolysis3:HasSpell(32271) or Cryolysis3:HasSpell(32266)) then
-			-- The Exodar
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "TheExodar", "spell", 32271, 32271, 32266);
-			Cryolysis3:AddMenuItem("PortalButton", "TheExodar", select(3, GetSpellInfo(32271)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "TheExodar", SafeSpellIcon(32271), tooltip);
 			hasTelePort = true;
 		end
-
 		if (Cryolysis3:HasSpell(49359) or Cryolysis3:HasSpell(49360)) then
-			-- Theramore
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Theramore", "spell", 49359, 49359, 49360);
-			Cryolysis3:AddMenuItem("PortalButton", "Theramore", select(3, GetSpellInfo(49359)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Theramore", SafeSpellIcon(49359), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(33690) or Cryolysis3:HasSpell(33691)) then
-			-- Shattrath
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "ShattrathCity", "spell", 33690, 33690, 33691);
-			Cryolysis3:AddMenuItem("PortalButton", "ShattrathCity", select(3, GetSpellInfo(33690)), tooltip);
-			
+			Cryolysis3:AddMenuItem("PortalButton", "ShattrathCity", SafeSpellIcon(33690), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(53140) or Cryolysis3:HasSpell(53142)) then
-			-- Dalaran
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Dalaran", "spell", 53140, 53140, 53142);
-			Cryolysis3:AddMenuItem("PortalButton", "Dalaran", select(3, GetSpellInfo(53140)), tooltip);
-			
+			Cryolysis3:AddMenuItem("PortalButton", "Dalaran", SafeSpellIcon(53140), tooltip);
 			hasTelePort = true;
 		end
 	else
-		-- Hoard
 		if (Cryolysis3:HasSpell(3567) or Cryolysis3:HasSpell(11417)) then
-			-- Orgrimmar
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Orgrimmar", "spell", 3567, 3567, 11417);
-			Cryolysis3:AddMenuItem("PortalButton", "Orgrimmar", select(3, GetSpellInfo(3567)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Orgrimmar", SafeSpellIcon(3567), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(3563) or Cryolysis3:HasSpell(11418)) then
-			-- Undercity
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Undercity", "spell", 3563, 3563, 11418);
-			Cryolysis3:AddMenuItem("PortalButton", "Undercity", select(3, GetSpellInfo(3563)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Undercity", SafeSpellIcon(3563), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(3566) or Cryolysis3:HasSpell(11420)) then
-			-- Thunder Bluff
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "ThunderBluff", "spell", 3566, 3566, 11420);
-			Cryolysis3:AddMenuItem("PortalButton", "ThunderBluff", select(3, GetSpellInfo(3566)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "ThunderBluff", SafeSpellIcon(3566), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(32272) or Cryolysis3:HasSpell(32267)) then
-			-- Silvermoon City
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "SilvermoonCity", "spell", 32272, 32272, 32267);
-			Cryolysis3:AddMenuItem("PortalButton", "SilvermoonCity", select(3, GetSpellInfo(32272)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "SilvermoonCity", SafeSpellIcon(32272), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(49358) or Cryolysis3:HasSpell(49361)) then
-			-- Stonard
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Stonard", "spell", 49358, 49358, 49361);
-			Cryolysis3:AddMenuItem("PortalButton", "Stonard", select(3, GetSpellInfo(49358)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "Stonard", SafeSpellIcon(49358), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(35715) or Cryolysis3:HasSpell(35717)) then
-			-- Shattrath
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "ShattrathCity", "spell", 35715, 35715, 35717);
-			Cryolysis3:AddMenuItem("PortalButton", "ShattrathCity", select(3, GetSpellInfo(35715)), tooltip);
-
+			Cryolysis3:AddMenuItem("PortalButton", "ShattrathCity", SafeSpellIcon(35715), tooltip);
 			hasTelePort = true;
 		end
-		
 		if (Cryolysis3:HasSpell(53140) or Cryolysis3:HasSpell(53142)) then
-			-- Dalaran
 			tooltip = Cryolysis3:PrepareButton("PortalButton", "Dalaran", "spell", 53140, 53140, 53142);
-			Cryolysis3:AddMenuItem("PortalButton", "Dalaran", select(3, GetSpellInfo(53140)), tooltip);
-			
+			Cryolysis3:AddMenuItem("PortalButton", "Dalaran", SafeSpellIcon(53140), tooltip);
 			hasTelePort = true;
 		end
 	end
 
-	-- Create our needed buttons
 	if (hasBuff) then
-		Cryolysis3:CreateButton("BuffButton",	UIParent,	"Interface\\Icons\\INV_Staff_13", "menuButton");
+		Cryolysis3:CreateButton("BuffButton", UIParent, "Interface\\Icons\\INV_Staff_13", "menuButton");
 	end
 
 	if (hasTelePort) then
-		Cryolysis3:CreateButton("PortalButton", UIParent,	"Interface\\Icons\\Spell_Nature_AstralRecalGroup", "menuButton");
+		Cryolysis3:CreateButton("PortalButton", UIParent, "Interface\\Icons\\Spell_Nature_AstralRecalGroup", "menuButton");
 	end
 
-	-- Update Item Count on buttons
 	UpdateItemCount();
-	
-	-- Update Sphere tooltip
 	UpdateSphereTooltip();
 end
 
@@ -1056,90 +913,47 @@ end
 -- Register for our needed events
 ------------------------------------------------------------------------------------------------------
 function module:RegisterClassEvents()
-	-- Events relevant to this class
-	--module:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	module:RegisterEvent("BAG_UPDATE");
 	module:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
-	--module:RegisterEvent("SPELL_UPDATE_COOLDOWN");
-	--module:RegisterEvent("UNIT_SPELLCAST_SENT");
-	--module:RegisterEvent("TRADE_SHOW");
-	--module:RegisterEvent("TRADE_CLOSED");
 	module:RegisterEvent("UNIT_POWER_UPDATE");
 end
 
-------------------------------------------------------------------------------------------------------
--- Our big bad combat log, this will fire more than Rambo's collected movies
-------------------------------------------------------------------------------------------------------
 function module:COMBAT_LOG_EVENT_UNFILTERED()
-
 end
 
-------------------------------------------------------------------------------------------------------
--- Whenever something changes in our bags
-------------------------------------------------------------------------------------------------------
 function module:BAG_UPDATE()
 	if (Cryolysis3GemButton ~= nil) then
-		-- Start checking for Mana Gem cooldown
 		UpdateManaGem();
-		
-		-- Update Item Count on buttons
 		UpdateItemCount();
-		
-		-- Update Sphere tooltip
 		UpdateSphereTooltip();
 	end
 end
 
-------------------------------------------------------------------------------------------------------
--- Casting.... casting.... YUS! Done!
-------------------------------------------------------------------------------------------------------
-function module:UNIT_SPELLCAST_SUCCEEDED(info, unit, name, rank)
-	if (name == GetSpellInfo(5405)) then
-		-- Mana Gem cooldown started
+function module:UNIT_SPELLCAST_SUCCEEDED(event, unit, castGUID, spellID)
+	local spellName = (type(castGUID) == "number" and GetSpellInfo(castGUID)) or (type(spellID) == "number" and GetSpellInfo(spellID)) or castGUID;
+	if (spellName == (GetSpellInfo(5405) or "Mana Emerald")) then
 		gemHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateManaGem, 1);
 	end
 
-	if (Cryolysis3.spellCache[12051] ~= nil) then
-		if (name == Cryolysis3.spellCache[12051].name) then
-			-- Evocation cooldown started
-			evocHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateEvocation, 1);
-		end
+	if (spellName == SafeSpellName(12051)) then
+		evocHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateEvocation, 1);
 	end
 
-Cryolysis3:UpdateSphere()
+	Cryolysis3:UpdateSphere();
 end
 
-------------------------------------------------------------------------------------------------------
--- Dammit need Combustion off cooldown NOW!
-------------------------------------------------------------------------------------------------------
 function module:SPELL_UPDATE_COOLDOWN()
-
 end
 
-------------------------------------------------------------------------------------------------------
--- Thar she flies!
-------------------------------------------------------------------------------------------------------
 function module:UNIT_SPELLCAST_SENT()
-
 end
 
-------------------------------------------------------------------------------------------------------
--- No, I'm not a vending machine. "Watr plx" is also not a valid way of asking.
-------------------------------------------------------------------------------------------------------
 function module:TRADE_SHOW()
-
 end
 
-------------------------------------------------------------------------------------------------------
--- Get out of ma face!
-------------------------------------------------------------------------------------------------------
 function module:TRADE_CLOSED()
-
 end
 
-------------------------------------------------------------------------------------------------------
--- We all loves the manas!
-------------------------------------------------------------------------------------------------------
 function module:UNIT_POWER_UPDATE(event, unitId)
 	if (unitId == "player") then
 		if (tonumber(Cryolysis3.db.char.outerSphere) == 3) then

@@ -26,14 +26,14 @@ libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
 libs\AceEvent-3.0\AceEvent-3.0.xml
 libs\AceLocale-3.0\AceLocale-3.0.xml
 libs\AceTimer-3.0\AceTimer-3.0.xml
-libs\LibPeriodicTable-3.1\LibPeriodicTable-3.1.lua
-libs\LibPeriodicTable-3.1-ClassSpell\LibPeriodicTable-3.1-ClassSpell.lua
+#libs\LibPeriodicTable-3.1\LibPeriodicTable-3.1.lua
+#libs\LibPeriodicTable-3.1-ClassSpell\LibPeriodicTable-3.1-ClassSpell.lua
 
 #@end-no-lib-strip@
 
+locales\enUS.lua
 locales\deDE.lua
 locales\ruRU.lua
-locales\enUS.lua
 locales\esES.lua
 locales\frFR.lua
 locales\koKR.lua

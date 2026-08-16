@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 "	Find a line with ""--"" in front of it, delete the ""--"" and replace """""""""
 "	with the string for your language.  Be sure to preserve all spacing!"
 ]]
