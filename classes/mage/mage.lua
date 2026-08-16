@@ -13,7 +13,8 @@ local gemHandle = nil;
 ------------------------------------------------------------------------------------------------------
 local function UpdateEvocation()
 	-- Get cooldown data
-	local start, duration, enabled = GetSpellCooldown(Cryolysis3.spellCache[12051].name);
+	local spellName = Cryolysis3:GetSpellName(12051)
+	local start, duration, enabled = GetSpellCooldown(spellName);
 		
 	if (duration == 0) then
 		-- Spell is not on cooldown
@@ -30,6 +31,7 @@ local function UpdateEvocation()
 		Cryolysis3EvocationButtonText:SetText(nil);
 		
 		-- Insert tooltip data saying its ready
+		local evocationName = Cryolysis3:GetSpellName(12051)
 		Cryolysis3.Private.tooltips["EvocationButton"][2] = L["Ready"];
 	else
 		-- Spell is on cooldown
@@ -721,7 +723,7 @@ function module:CreateButtons()
 		Cryolysis3.Private.tooltips["EvocationButton"] = {};
 
 		-- Start adding tooltip data
-		table.insert(Cryolysis3.Private.tooltips["EvocationButton"], Cryolysis3.spellCache[12051].name);
+		table.insert(Cryolysis3.Private.tooltips["EvocationButton"], Cryolysis3:GetSpellName(12051));
 		
 		-- Set Evocation button action
 		Cryolysis3.db.char.buttonTypes["EvocationButton"] = "spell";
@@ -750,10 +752,10 @@ function module:CreateButtons()
 	-- Check for highest rank of gem
 	local gemID = Cryolysis3:GetHighestRank(gemLookupTable, "gem");
 
-	if (foodID ~= nil ) then
+	if (foodID ~= nil and Cryolysis3.spellCache[foodID]) then
 		Cryolysis3:CreateButton("FoodButton",	UIParent,	select(3, GetSpellInfo(foodID)));
 		Cryolysis3.Private.tooltips["FoodButton"] = {};
-		
+
 		local foodName = GetItemInfo(foodLookupTable[foodID]);
 		if (foodName == nil) then
 			foodName = Cryolysis3.spellCache[foodID].name;
@@ -761,25 +763,25 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["FoodButton"],	Cryolysis3.spellCache[foodID].name);
 		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	foodName));
 		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[foodID].name));
-		
+
 		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["FoodButton"] = {};
 		Cryolysis3.db.char.buttonTypes["FoodButton"] = "macrotext";
 		Cryolysis3.db.char.buttonFunctions["FoodButton"].left = "/use "..foodName;
 		Cryolysis3.db.char.buttonFunctions["FoodButton"].right = "/cast "..Cryolysis3.spellCache[foodID].name;
-	
-		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
-			table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
-			Cryolysis3.db.char.buttonFunctions["FoodButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
+
+		if (Cryolysis3:HasSpell(43987) and Cryolysis3:GetSpellName(43987)) then--table de rafraichissement
+			table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3:GetSpellName(43987).name));
+			Cryolysis3.db.char.buttonFunctions["FoodButton"].middle = "/cast "..Cryolysis3:GetSpellName(43987).name;
 		end
-		
+
 		Cryolysis3:UpdateAllButtonAttributes("FoodButton");
 	end
 
-	if (waterID ~= nil ) then
+	if (waterID ~= nil and Cryolysis3.spellCache[waterID]) then
 		Cryolysis3:CreateButton("WaterButton",	UIParent,	select(3, GetSpellInfo(waterID)));
 		Cryolysis3.Private.tooltips["WaterButton"] = {};
-		
+
 		local waterName = GetItemInfo(waterLookupTable[waterID]);
 		if (waterName == nil) then
 			waterName = Cryolysis3.spellCache[waterID].name;
@@ -787,27 +789,27 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], Cryolysis3.spellCache[waterID].name);
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	waterName));
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[waterID].name));
-		
+
 		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["WaterButton"] = {};
 		Cryolysis3.db.char.buttonTypes["WaterButton"] = "macrotext";
 		Cryolysis3.db.char.buttonFunctions["WaterButton"].left = "/use "..waterName;
 		Cryolysis3.db.char.buttonFunctions["WaterButton"].right = "/cast "..Cryolysis3.spellCache[waterID].name;
 
-		if (Cryolysis3:HasSpell(43987)) then--table de rafraichissement
-			table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3.spellCache[43987].name));
-			Cryolysis3.db.char.buttonFunctions["WaterButton"].middle = "/cast "..Cryolysis3.spellCache[43987].name;
+		if (Cryolysis3:HasSpell(43987) and Cryolysis3:GetSpellName(43987)) then--table de rafraichissement
+			table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Middle"],	L["cast"],	Cryolysis3:GetSpellName(43987).name));
+			Cryolysis3.db.char.buttonFunctions["WaterButton"].middle = "/cast "..Cryolysis3:GetSpellName(43987).name;
 		end
-		
+
 		Cryolysis3:UpdateAllButtonAttributes("WaterButton");
 	end
 
-	if (gemID ~= nil) then
+	if (gemID ~= nil and Cryolysis3.spellCache[gemID]) then
 		Cryolysis3.Private.manaGem = gemLookupTable[gemID];
 
 		Cryolysis3:CreateButton("GemButton",	UIParent,	select(3, GetSpellInfo(gemID)));
 		Cryolysis3.Private.tooltips["GemButton"] = {};
-		
+
 		local gemName = GetItemInfo(gemLookupTable[gemID]);
 		if (gemName == nil) then
 			gemName = Cryolysis3.spellCache[gemID].name;
@@ -815,7 +817,7 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], Cryolysis3.spellCache[gemID].name);
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Left"],	L["use"],	gemName));
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Right"],	L["cast"],	Cryolysis3.spellCache[gemID].name));
-		
+
 		-- Set button functions
 		Cryolysis3.db.char.buttonFunctions["GemButton"] = {};
 		Cryolysis3.db.char.buttonTypes["GemButton"] = "macrotext";
@@ -1100,7 +1102,7 @@ function module:UNIT_SPELLCAST_SUCCEEDED(info, unit, name, rank)
 	end
 
 	if (Cryolysis3.spellCache[12051] ~= nil) then
-		if (name == Cryolysis3.spellCache[12051].name) then
+		if (name == Cryolysis3:GetSpellName(12051)) then
 			-- Evocation cooldown started
 			evocHandle = Cryolysis3:ScheduleRepeatingTimer(UpdateEvocation, 1);
 		end

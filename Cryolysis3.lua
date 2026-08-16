@@ -8,6 +8,19 @@ local AceConfig = LibStub("AceConfigDialog-3.0");
 -- Don't move this!
 Cryolysis3:SetDefaultModuleState(false);
 
+------------------------------------------------------------------------------------------------------
+-- Helper function to get spell name safely from cache or GetSpellInfo
+------------------------------------------------------------------------------------------------------
+function Cryolysis3:GetSpellName(spellID)
+	if not spellID then
+		return nil
+	end
+	if self.spellCache and self.spellCache[spellID] and self.spellCache[spellID].name then
+		return self.spellCache[spellID].name
+	end
+	return select(1, GetSpellInfo(spellID))
+end
+
 
 ------------------------------------------------------------------------------------------------------
 -- Initialise the startup
