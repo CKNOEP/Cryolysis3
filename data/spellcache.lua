@@ -203,8 +203,8 @@ function Cryolysis3:HasSpell(spellID)
 		if (Cryolysis3.spellCache[spellID] ~= nil) then
 			return true;
 		end
-		-- Sinon vérifier si on a le sort en jeu
-		if (IsSpellKnown(spellID)) then
+		-- Sinon vérifier si on a le sort en jeu avec GetSpellInfo
+		if GetSpellInfo and GetSpellInfo(spellID) then
 			return true;
 		end
 		return false;
