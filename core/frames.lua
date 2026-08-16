@@ -54,9 +54,6 @@ function Cryolysis3:CreateFrame(...) -- See Cryolysis3.lua for a demo :)
 		-- We're altering a button
 		frameType = "button";
 
-		-- Register for clicks - IMPORTANT for button actions to work!
-		frame:RegisterForClicks("AnyUp");
-
 		-- Create the icon of the frame
 		local texture = frame:CreateTexture(frameName.."Icon", "BACKGROUND");
 		texture:SetWidth(22);

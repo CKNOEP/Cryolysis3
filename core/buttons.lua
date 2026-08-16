@@ -53,9 +53,9 @@ function Cryolysis3:CreateButton(name, parentFrame, texture, buttonType)
 
 	if (not found) then
 		-- Insert the button name in the table of buttons
-		table.insert(Cryolysis3.db.char.buttons, name);		
+		table.insert(Cryolysis3.db.char.buttons, name);
 	end
-	
+
 	-- Register the button for clicks
 	local button = getglobal("Cryolysis3"..name);
 	button:RegisterForDrag("LeftButton");
@@ -358,9 +358,13 @@ function Cryolysis3:UpdateButton(button, click)
 	if (Cryolysis3.db.char.buttonFunctions[button][click] == nil) then
 		return false;
 	end
-	
+
 	-- Set the true middle click key to the true action
-	Cryolysis3:SetAttribute(button, Cryolysis3.db.char.middleKey, click, actionType, Cryolysis3.db.char.buttonFunctions[button][click]);
+	local modifier = "none";
+	if (click == "middle") then
+		modifier = Cryolysis3.db.char.middleKey;
+	end
+	Cryolysis3:SetAttribute(button, modifier, click, actionType, Cryolysis3.db.char.buttonFunctions[button][click]);
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -474,7 +478,14 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 		
 		-- Set our attributes
 		-- First set the type for this specific click+modifier
-		b:SetAttribute(modifier.."type"..click, actionType);
+		local typeToSet = actionType;
+		if actionType == "macrotext" then
+			-- macrotext should use "macro" type, not "macrotext"
+			typeToSet = "macro";
+		end
+
+		b:SetAttribute(modifier.."type"..click, typeToSet);
+
 		-- Then set the action (use actionName for spells, original action for items/macros)
 		if actionType == "spell" then
 			-- For spells, use the name not the ID
@@ -484,6 +495,9 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 			b:SetAttribute(modifier..actionType..click, action);
 		end
 	end
+
+	-- Register for clicks AFTER configuring attributes - CRITICAL for WoW BC!
+	b:RegisterForClicks("AnyUp");
 end
 
 ------------------------------------------------------------------------------------------------------
