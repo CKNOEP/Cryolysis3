@@ -12,7 +12,7 @@ function Cryolysis3:RegisterCommonEvents()
 	Cryolysis3:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 	Cryolysis3:RegisterEvent("PLAYER_REGEN_DISABLED");
 	Cryolysis3:RegisterEvent("PLAYER_REGEN_ENABLED");
-	Cryolysis3:RegisterEvent("LEARNED_SPELL_IN_TAB");
+	Cryolysis3:RegisterEvent("SPELLS_CHANGED");
 	Cryolysis3:RegisterEvent("CHARACTER_POINTS_CHANGED");
 end
 
@@ -65,7 +65,7 @@ end
 ------------------------------------------------------------------------------------------------------
 -- We learned a new ability/spell
 ------------------------------------------------------------------------------------------------------
-function Cryolysis3:LEARNED_SPELL_IN_TAB()
+function Cryolysis3:SPELLS_CHANGED()
 	-- We learned a new spell
 	Cryolysis3:CacheSpells();
 end
