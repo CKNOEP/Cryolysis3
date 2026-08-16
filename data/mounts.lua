@@ -42,16 +42,31 @@ function Cryolysis3:DetectMounts()
 	local name, link, mountID;
 	local mounts = {};
 
+	-- Déterminer les fonctions disponibles pour les sacs
+	local getContainerNumSlots = GetContainerNumSlots
+	local getContainerItemID = GetContainerItemID
+	local numBagSlots = NUM_BAG_SLOTS or 4
 
+	if not getContainerNumSlots and C_Container then
+		getContainerNumSlots = C_Container.GetContainerNumSlots
+	end
 
-    -- check for mounts in bags	
-	 for bag = 0, NUM_BAG_SLOTS do
-        for slot = 1, GetContainerNumSlots(bag) do
-            item = GetContainerItemID(bag, slot)
+	if not getContainerItemID and C_Container then
+		getContainerItemID = C_Container.GetContainerItemID
+	end
+
+	if not getContainerNumSlots or not getContainerItemID then
+		return
+	end
+
+    -- check for mounts in bags
+	 for bag = 0, numBagSlots do
+        for slot = 1, getContainerNumSlots(bag) do
+            item = getContainerItemID(bag, slot)
             if item ~= nil then
-                itype = select(3, GetItemInfoInstant(item))
-                itypeID = select(6, GetItemInfoInstant(item))
-				isubtypeID = select(7, GetItemInfoInstant(item))
+                itype = select(3, GetItemInfoInstant(item)) or select(3, GetItemInfo(item))
+                itypeID = select(6, GetItemInfoInstant(item)) or select(6, GetItemInfo(item))
+				isubtypeID = select(7, GetItemInfoInstant(item)) or select(7, GetItemInfo(item))
 				
 				if (itypeID == 15 and isubtypeID == 5)  then
                     name = select(1, GetItemInfo(item))
