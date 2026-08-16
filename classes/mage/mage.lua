@@ -14,7 +14,7 @@ local gemHandle = nil;
 local function UpdateEvocation()
 	-- Get cooldown data
 	local spellName = Cryolysis3:GetSpellName(12051)
-	local start, duration, enabled = GetSpellCooldown(spellName);
+	local start, duration, enabled = GetSpellCooldown(12051);
 		
 	if (duration == 0) then
 		-- Spell is not on cooldown
@@ -738,7 +738,10 @@ function module:CreateButtons()
 		Cryolysis3.Private.tooltips["EvocationButton"] = {};
 
 		-- Start adding tooltip data
-		table.insert(Cryolysis3.Private.tooltips["EvocationButton"], Cryolysis3:GetSpellName(12051));
+		local evocationName = Cryolysis3:GetSpellName(12051)
+		if evocationName then
+			table.insert(Cryolysis3.Private.tooltips["EvocationButton"], evocationName);
+		end
 
 		-- Set Evocation button action
 		Cryolysis3.db.char.buttonTypes["EvocationButton"] = "spell";
@@ -816,7 +819,9 @@ function module:CreateButtons()
 		if (waterName == nil) then
 			waterName = spellName or "Water";
 		end
-		table.insert(Cryolysis3.Private.tooltips["WaterButton"], spellName or "Water");
+		if spellName then
+			table.insert(Cryolysis3.Private.tooltips["WaterButton"], spellName);
+		end
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], waterName));
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], spellName or "Water"));
 
@@ -849,7 +854,9 @@ function module:CreateButtons()
 		if (gemName == nil) then
 			gemName = spellName or "Gem";
 		end
-		table.insert(Cryolysis3.Private.tooltips["GemButton"], spellName or "Gem");
+		if spellName then
+			table.insert(Cryolysis3.Private.tooltips["GemButton"], spellName);
+		end
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], gemName));
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], spellName or "Gem"));
 
