@@ -170,9 +170,9 @@ function Cryolysis3:GetHighestRank(spells, override)
 
 	for k, v in pairs(spells) do
 		--print(override,Cryolysis3:HasSpell(587),v,k)
-		
-		--///(Obsolet)///if (Cryolysis3:HasSpell(k) and k > highest) then 
-		if (IsPlayerSpell(k)==true and k > highest) then
+
+		local hasSpell = IsPlayerSpell and IsPlayerSpell(k) or Cryolysis3:HasSpell(k)
+		if (hasSpell and k > highest) then
 			-- This is a higher rank spell
 			highest = k;		
 
