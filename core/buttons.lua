@@ -470,18 +470,15 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 		end
 		
 		-- Set our attributes
-		-- First set the type
-		b:SetAttribute("type"..click, actionType);
-		b:SetAttribute(modifier.."type*", actionType);
+		-- First set the type for this specific click+modifier
+		b:SetAttribute(modifier.."type"..click, actionType);
 		-- Then set the action (use actionName for spells, original action for items/macros)
 		if actionType == "spell" then
 			-- For spells, use the name not the ID
-			b:SetAttribute(actionType..click, actionName);
-			b:SetAttribute(modifier..actionType.."*", actionName);
+			b:SetAttribute(modifier..actionType..click, actionName);
 		else
 			-- For items and macros, use the original action
-			b:SetAttribute(actionType..click, action);
-			b:SetAttribute(modifier..actionType.."*", action);
+			b:SetAttribute(modifier..actionType..click, action);
 		end
 	end
 end
