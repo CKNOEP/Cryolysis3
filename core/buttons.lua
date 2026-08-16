@@ -119,14 +119,16 @@ function Cryolysis3:PositionMenuItems(name, direction)
 		yOffset = 0;
 	end
 
-	for i, buttonName in ipairs(Cryolysis3.db.char.menuButtons[name]) do
-		button = getglobal("Cryolysis3"..buttonName);
-		if (button ~= nil) then
-			button:SetParent(frame);
-			button:ClearAllPoints();
-			button:SetPoint("CENTER", frame, "CENTER", x, y);
-			x = x + xOffset;
-			y = y + yOffset;
+	if Cryolysis3.db.char.menuButtons and Cryolysis3.db.char.menuButtons[name] then
+		for i, buttonName in ipairs(Cryolysis3.db.char.menuButtons[name]) do
+			button = getglobal("Cryolysis3"..buttonName);
+			if (button ~= nil) then
+				button:SetParent(frame);
+				button:ClearAllPoints();
+				button:SetPoint("CENTER", frame, "CENTER", x, y);
+				x = x + xOffset;
+				y = y + yOffset;
+			end
 		end
 	end
 
