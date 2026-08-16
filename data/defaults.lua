@@ -29,7 +29,15 @@ Cryolysis3.defaults = {
 		
 		-- Arrays
 		positions		= {},			-- Positions of the frames and buttons
-		scale			= {},			-- Scale of the frames and buttons
+		scale			= {
+			button = {
+				["Sphere"] = 1.0,
+				["EvocationButton"] = 1.0,
+				["FoodButton"] = 1.0,
+				["WaterButton"] = 1.0,
+				["GemButton"] = 1.0,
+			}
+		},			-- Scale of the frames and buttons
 		hidden			= {},			-- What frames are supposed to be hidden
 		buttons			= {},			-- Table of buttons
 		buttonText		= {},			-- Table of true/false values to determine displaying of button text
