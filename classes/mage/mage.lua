@@ -80,7 +80,13 @@ local function UpdateManaGem()
 	if not Cryolysis3.Private.manaGem then
 		return
 	end
+	if not GetItemCooldown then
+		return
+	end
 	local start, duration, enabled = GetItemCooldown(Cryolysis3.Private.manaGem)
+	if not duration then
+		duration = 0
+	end
 	if (duration == 0) then
 		-- Spell is not on cooldown
 		if (gemHandle ~= nil) then
