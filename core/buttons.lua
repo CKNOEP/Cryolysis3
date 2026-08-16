@@ -580,7 +580,9 @@ function Cryolysis3:UpdateScale(frameType, name, value)
 
 	Cryolysis3:SaveAnchorPosition(frameType, name);
 	local f = getglobal("Cryolysis3"..name)
-	f:SetScale(value)
+	if f then
+		f:SetScale(value)
+	end
 	Cryolysis3:LoadAnchorPosition(frameType, name);
 
 end
