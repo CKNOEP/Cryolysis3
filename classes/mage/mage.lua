@@ -727,9 +727,7 @@ end
 ------------------------------------------------------------------------------------------------------
 function module:CreateButtons()
 
-	Cryolysis3:Print("[DEBUG] CreateButtons() started");
 	if (Cryolysis3:HasSpell(12051)) then
-		Cryolysis3:Print("[DEBUG] Creating EvocationButton");
 		-- We has an Evocation, create and set up the button for it
 		local evocationIcon = select(3, GetSpellInfo(12051))
 		Cryolysis3:CreateButton("EvocationButton", UIParent, evocationIcon);
@@ -753,33 +751,24 @@ function module:CreateButtons()
 
 		-- Update Evocation cooldown
 		UpdateEvocation();
-		Cryolysis3:Print("[DEBUG] EvocationButton created successfully");
 	else
 		Cryolysis3:Print("[DEBUG] EvocationButton NOT created (no spell 12051)");
 	end
 
-	Cryolysis3:Print("[DEBUG] Getting lookup tables...");
 	-- Lookup table for conjure spell id -> item id
 	local foodLookupTable = GetLookupTable("food");
-	Cryolysis3:Print("[DEBUG] foodLookupTable retrieved");
 	local waterLookupTable = GetLookupTable("water");
 	local gemLookupTable = GetLookupTable("gem");
 	
 	-- Check for highest rank of food
 	local foodID = Cryolysis3:GetHighestRank(foodLookupTable, "food");
-	Cryolysis3:Print("[DEBUG] foodID: " .. tostring(foodID));
-	--foodID = 33717 -- croissant
-	--print ("foodID",foodLookupTable,foodID)
 	-- Check for highest rank of water
 	local waterID = Cryolysis3:GetHighestRank(waterLookupTable, "water");
-	Cryolysis3:Print("[DEBUG] waterID: " .. tostring(waterID));
 
 	-- Check for highest rank of gem
 	local gemID = Cryolysis3:GetHighestRank(gemLookupTable, "gem");
-	Cryolysis3:Print("[DEBUG] gemID: " .. tostring(gemID));
 
 	if (foodID ~= nil) then
-		Cryolysis3:Print("[DEBUG] Creating FoodButton");
 		Cryolysis3:CreateButton("FoodButton", UIParent, select(3, GetSpellInfo(foodID)));
 		Cryolysis3.Private.tooltips["FoodButton"] = {};
 
@@ -810,7 +799,6 @@ function module:CreateButtons()
 	end
 
 	if (waterID ~= nil) then
-		Cryolysis3:Print("[DEBUG] Creating WaterButton");
 		Cryolysis3:CreateButton("WaterButton", UIParent, select(3, GetSpellInfo(waterID)));
 		Cryolysis3.Private.tooltips["WaterButton"] = {};
 
@@ -843,7 +831,6 @@ function module:CreateButtons()
 	end
 
 	if (gemID ~= nil) then
-		Cryolysis3:Print("[DEBUG] Creating GemButton");
 		Cryolysis3.Private.manaGem = gemLookupTable[gemID];
 
 		Cryolysis3:CreateButton("GemButton", UIParent, select(3, GetSpellInfo(gemID)));
