@@ -77,6 +77,9 @@ end
 -- Function to update the cooldown on Mana Gem
 ------------------------------------------------------------------------------------------------------
 local function UpdateManaGem()
+	if not Cryolysis3.Private.manaGem then
+		return
+	end
 	local start, duration, enabled = GetItemCooldown(Cryolysis3.Private.manaGem)
 	if (duration == 0) then
 		-- Spell is not on cooldown
