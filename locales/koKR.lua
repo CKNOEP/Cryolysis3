@@ -8,3 +8,6 @@
 ------------------------------------------------------------------------------------------------------
 local L = LibStub("AceLocale-3.0"):NewLocale("Cryolysis3", "koKR")
 if not L then return end
+
+L["Left Click for Config"] = "왼쪽 클릭으로 구성";
+L["Shift+Drag to Move"] = "Shift+드래그로 이동";

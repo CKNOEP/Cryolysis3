@@ -110,7 +110,7 @@ function Cryolysis3:FindMounts(hasLoaded)
 		-- Make sure this is a table
 		Cryolysis3.db.char.buttonFunctions.MountButton = {};
 	end
-	
+
 	if (hasLoaded == nil) then
 		-- Create the mount button
 		Cryolysis3:CreateButton("MountButton", UIParent);
@@ -153,7 +153,9 @@ end
 function Cryolysis3:UpdateMountButtonMacro()
 
 	local macro = "";
-	local hs = GetItemInfo(6948);
+	-- Get the item name in the current language for Hearthstone
+	local hsItemName = select(1, GetItemInfo(6948)) or "Hearthstone";
+	local hs = "/use " .. hsItemName;
 
 	if (Cryolysis3.db.char.mountBehavior == 2) then
 		if (Cryolysis3.db.char.chosenMount["normal"] == nil) then
@@ -227,13 +229,13 @@ function Cryolysis3:UpdateMountButtonMacro()
 		Cryolysis3.db.char.buttonFunctions["MountButton"].right = macro;
 	else
 		if hs ~= nil then
-			Cryolysis3.db.char.buttonFunctions["MountButton"].right = "/cast "..hs;
+			Cryolysis3.db.char.buttonFunctions["MountButton"].right = hs;
 		end
 	end
 
 	-- Set the default right button to the Hearthstone
 	if hs ~= nil then
-		Cryolysis3.db.char.buttonFunctions["MountButton"].middle = "/cast "..hs;
+		Cryolysis3.db.char.buttonFunctions["MountButton"].middle = hs;
 	end
 	
 	-- Now update all attributes
@@ -250,7 +252,7 @@ function Cryolysis3:UpdateMountButtonTexture()
 	-- Get the texture and the icon object
 	local texture = select(2, GetMacroInfo(GetMacroIndexByName(Cryolysis3.Private.macroName)));
 	local t = getglobal("Cryolysis3MountButtonIcon");
-	
+
 	if (t ~= nil and texture ~= nil) then
 		-- Set the texture
 		t:SetTexture(texture);

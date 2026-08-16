@@ -33,9 +33,12 @@ function Cryolysis3:CreateFrame(...) -- See Cryolysis3.lua for a demo :)
 	
 	frame:SetMovable(movable);
 	frame:SetClampedToScreen(true);
-	frame:SetNormalTexture(normalTexturePath);
-	if highlightTexturePath ~= nil then
-		-- Only set highlight texture if it's not nil
+
+	-- Only set textures if frame has these methods
+	if frame.SetNormalTexture and normalTexturePath ~= nil then
+		frame:SetNormalTexture(normalTexturePath);
+	end
+	if highlightTexturePath ~= nil and frame.SetHighlightTexture then
 		frame:SetHighlightTexture(highlightTexturePath, "BLEND");
 	end
 	frame:ClearAllPoints();
@@ -120,8 +123,37 @@ function Cryolysis3:AddScript(name, frameType, scriptName)
 		end)
 	elseif scriptName == "OnClick" then
 		if (frameType == "menuButton") then
-			item:SetScript("_"..scriptName, function(self)
+			item:SetScript(scriptName, function(self)
 				Cryolysis3:OpenCloseMenu(name);
+			end)
+		else
+			-- For spell/item buttons, add a secure OnClick script
+			item:SetScript("_"..scriptName, function(self, button)
+				local clickNum = button == "LeftButton" and 1 or (button == "RightButton" and 2 or (button == "MiddleButton" and 3 or nil));
+				if not clickNum then return; end
+
+				local typeAttr = "type" .. clickNum;
+				local actionType = self:GetAttribute(typeAttr);
+
+				if actionType == "spell" then
+					local spellAttr = "spell" .. clickNum;
+					local spellName = self:GetAttribute(spellAttr);
+					if spellName then
+						CastSpellByName(spellName);
+					end
+				elseif actionType == "item" then
+					local itemAttr = "item" .. clickNum;
+					local itemID = self:GetAttribute(itemAttr);
+					if itemID then
+						UseItemByName(itemID);
+					end
+				elseif actionType == "macro" then
+					local macrotextAttr = "macrotext" .. clickNum;
+					local macrotext = self:GetAttribute(macrotextAttr);
+					if macrotext then
+						RunMacroText(macrotext);
+					end
+				end
 			end)
 		end
 	end

@@ -9,12 +9,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Cryolysis3");
 -- Wrapper function to create a button with less parameters
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:CreateButton(name, parentFrame, texture, buttonType)
-	local template;
-	if (buttonType == "menuButton") then
-		template = "SecureHandlerClickTemplate";
-	else
-		template = "SecureActionButtonTemplate";
-	end
+	local template = "SecureUnitButtonTemplate";
 	-- Create the button frame
 	local frame = Cryolysis3:CreateFrame(
 		"Button", name, parentFrame, template, 34, 34, true,
@@ -27,21 +22,6 @@ function Cryolysis3:CreateButton(name, parentFrame, texture, buttonType)
 	if (buttonType == "menuButton") then
 		-- Do growth positioning
 		Cryolysis3:PositionMenuItems(name, Cryolysis3.db.char.menuButtonGrowth[name])
-	
-		frame:Execute( [[MenuButtons = table.new(self:GetChildren())]] )
-		frame:SetAttribute("_onclick", [[
-			if menuOpen then
-				menuOpen = false
-				for i, child in ipairs(MenuButtons) do
-				       child:Hide()
-				  end
-			else
-				menuOpen = true;
-				for i, child in ipairs(MenuButtons) do
-					child:Show()
-				end
-			end]]
-		);
 	end
 	
 	local found = false;
@@ -66,19 +46,27 @@ function Cryolysis3:CreateButton(name, parentFrame, texture, buttonType)
 		button:Hide();
 	end
 
-	-- Add the Drag Start and Drag Stop scripts (temp disabled)
-	Cryolysis3:AddScript(name, "button", "OnDragStart");
-	Cryolysis3:AddScript(name, "button", "OnDragStop")
+	-- Determine the correct frameType for scripts
+	local scriptFrameType = (buttonType == "menuButton") and "menuButton" or "button";
+
+	-- Add the Drag Start and Drag Stop scripts
+	Cryolysis3:AddScript(name, scriptFrameType, "OnDragStart");
+	Cryolysis3:AddScript(name, scriptFrameType, "OnDragStop")
+
+	-- Add OnClick script ONLY for menu buttons!
+	if (buttonType == "menuButton") then
+		Cryolysis3:AddScript(name, scriptFrameType, "OnClick");
+	end
 
 	-- Handle button tooltip
-	Cryolysis3:AddScript(name, "button", "OnEnter");
-	Cryolysis3:AddScript(name, "button", "OnLeave");
-	
+	Cryolysis3:AddScript(name, scriptFrameType, "OnEnter");
+	Cryolysis3:AddScript(name, scriptFrameType, "OnLeave");
+
 	-- Initialize button text if it's nil
 	if (Cryolysis3.db.char.buttonText[name] == "") then
 		Cryolysis3.db.char.buttonText[name] = nil;
 	end
-	
+
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -138,9 +126,9 @@ end
 -- Wrapper function to create a menu item button with less parameters
 ------------------------------------------------------------------------------------------------------
 function Cryolysis3:CreateMenuItemButton(name, parentFrame, texture, menuType)
-	-- Create the button frame
+	-- Create the button frame with SecureUnitButtonTemplate (the correct one for WoW BC!)
 	Cryolysis3:CreateFrame(
-		"Button", name, parentFrame, "SecureActionButtonTemplate", 40, 40, true,
+		"Button", name, parentFrame, "SecureUnitButtonTemplate", 40, 40, true,
 		texture, 26, 26,
 		"Interface\\AddOns\\Cryolysis3\\textures\\nohighlight",
 		"Interface\\AddOns\\Cryolysis3\\textures\\highlight",
@@ -340,10 +328,10 @@ function Cryolysis3:UpdateButton(button, click)
 	if (InCombatLockdown()) then  -- You can't set button attributes in-combat
 		return false;
 	end
-	
+
 	-- Get the action name based on parameters
 	local actionType	= Cryolysis3.db.char.buttonTypes[button];
-	
+
 	if (click == "middle") then
 		-- Clear out the 3 attributes if we're changing middle click
 		Cryolysis3:SetAttribute(button, "alt",		click, actionType, "");
@@ -446,7 +434,12 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 		local texture		= nil;
 		
 		if (actionType == "spell") then
-			actionName, _, texture = GetSpellInfo(action);			
+			actionName, _, texture = GetSpellInfo(action);
+			-- Remove rank from spell name: "Spell Name(Rank X)" -> "Spell Name"
+			-- This is needed for SecureActionButton to work in WoW BC!
+			if actionName then
+				actionName = actionName:match("^(.-)%(") or actionName;
+			end			
 			
 		elseif (actionType == "item") then
 			actionName, _, _, _, _, _, _, _, _, texture = GetItemInfo(action);
@@ -497,6 +490,7 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 	end
 
 	-- Register for clicks AFTER configuring attributes - CRITICAL for WoW BC!
+	-- This must be done AFTER all SetAttribute calls (like Necrosis does it)!
 	b:RegisterForClicks("AnyUp");
 end
 

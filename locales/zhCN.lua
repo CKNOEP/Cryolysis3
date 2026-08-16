@@ -8,3 +8,6 @@
 ------------------------------------------------------------------------------------------------------
 local L = LibStub("AceLocale-3.0"):NewLocale("Cryolysis3", "zhCN")
 if not L then return end
+
+L["Left Click for Config"] = "左击打开配置";
+L["Shift+Drag to Move"] = "Shift+拖动以移动";

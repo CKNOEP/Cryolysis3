@@ -40,6 +40,9 @@ L["Mount"] = true;
 	L["Right click to Hearthstone to "] = true;
 	L["Middle click to Hearthstone to "] = true;
 
+L["Left Click for Config"] = true;
+L["Shift+Drag to Move"] = true;
+
 L["Custom Button"] = true;
 	-- Custom button locales
 	L["No actions assigned to this button."] = true;

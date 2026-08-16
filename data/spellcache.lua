@@ -203,10 +203,14 @@ function Cryolysis3:HasSpell(spellID)
 		if (Cryolysis3.spellCache[spellID] ~= nil) then
 			return true;
 		end
-		-- Sinon vérifier si on a le sort en jeu avec GetSpellInfo
-		if GetSpellInfo and GetSpellInfo(spellID) then
-			return true;
+		-- Essayer IsPlayerSpell avec fallback sécurisé
+		if IsPlayerSpell then
+			local ok, result = pcall(IsPlayerSpell, spellID);
+			if ok and result then
+				return true;
+			end
 		end
+		-- Fallback : ne pas retourner true juste parce que GetSpellInfo() existe
 		return false;
 	end
 end

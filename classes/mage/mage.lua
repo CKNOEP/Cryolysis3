@@ -182,11 +182,11 @@ local function GetLookupTable(name)
 	elseif (name == "gem") then  --This should be changed to show the number of charges available for mana emerald, but we have to wait for Blizz to add the ItemChargeCount function...:(
 		return {
 			--[42985]	= 33312,
-			[27101]	= 22044,
-			[10054]	= 8008,
-			[10053]	= 8007,
-			[3552]	= 5513,
-			[759]	= 5514,
+			[27101]	= 22044,  -- Mana Emerald (level 68)
+			[10054]	= 8008,   -- Mana Ruby
+			[10053]	= 8007,   -- Mana Citrine
+			-- [3552] = 5513,   -- Mana Citrine Rank 2 (Forbidden in BC Anniversary)
+			-- [759]  = 5514,   -- Mana Agate (Forbidden in BC Anniversary)
 		};
 	end	
 end
@@ -215,6 +215,10 @@ local function UpdateSphereTooltip()
 	Cryolysis3.Private.tooltips["Sphere"][5] = select(1, GetItemInfo(17056))..": "..(GetItemCount(17056) or 0);
 	Cryolysis3.Private.tooltips["Sphere"][6] = select(1, GetItemInfo(17031))..": "..(GetItemCount(17031) or 0);
 	Cryolysis3.Private.tooltips["Sphere"][7] = select(1, GetItemInfo(17032))..": "..(GetItemCount(17032) or 0);
+
+	-- Add sphere instructions
+	Cryolysis3.Private.tooltips["Sphere"][8] = L["Left Click for Config"];
+	Cryolysis3.Private.tooltips["Sphere"][9] = L["Shift+Drag to Move"];
 end
 
 
@@ -769,7 +773,7 @@ function module:CreateButtons()
 	local gemID = Cryolysis3:GetHighestRank(gemLookupTable, "gem");
 
 	if (foodID ~= nil) then
-		Cryolysis3:CreateButton("FoodButton", UIParent, select(3, GetSpellInfo(foodID)));
+		Cryolysis3:CreateButton("FoodButton", UIParent, select(10, GetItemInfo(foodLookupTable[foodID])));
 		Cryolysis3.Private.tooltips["FoodButton"] = {};
 
 		local foodName = GetItemInfo(foodLookupTable[foodID]);
@@ -781,7 +785,7 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], foodName));
 		table.insert(Cryolysis3.Private.tooltips["FoodButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], spellName or "Food"));
 
-		-- Set button functions
+		-- Set button functions - use item name for WoW BC compatibility
 		Cryolysis3.db.char.buttonFunctions["FoodButton"] = {};
 		Cryolysis3.db.char.buttonTypes["FoodButton"] = "macrotext";
 		Cryolysis3.db.char.buttonFunctions["FoodButton"].left = "/use " .. foodName;
@@ -799,7 +803,7 @@ function module:CreateButtons()
 	end
 
 	if (waterID ~= nil) then
-		Cryolysis3:CreateButton("WaterButton", UIParent, select(3, GetSpellInfo(waterID)));
+		Cryolysis3:CreateButton("WaterButton", UIParent, select(10, GetItemInfo(waterLookupTable[waterID])));
 		Cryolysis3.Private.tooltips["WaterButton"] = {};
 
 		local waterName = GetItemInfo(waterLookupTable[waterID]);
@@ -813,7 +817,7 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], waterName));
 		table.insert(Cryolysis3.Private.tooltips["WaterButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], spellName or "Water"));
 
-		-- Set button functions
+		-- Set button functions - use item name for WoW BC compatibility
 		Cryolysis3.db.char.buttonFunctions["WaterButton"] = {};
 		Cryolysis3.db.char.buttonTypes["WaterButton"] = "macrotext";
 		Cryolysis3.db.char.buttonFunctions["WaterButton"].left = "/use " .. waterName;
@@ -833,7 +837,7 @@ function module:CreateButtons()
 	if (gemID ~= nil) then
 		Cryolysis3.Private.manaGem = gemLookupTable[gemID];
 
-		Cryolysis3:CreateButton("GemButton", UIParent, select(3, GetSpellInfo(gemID)));
+		Cryolysis3:CreateButton("GemButton", UIParent, select(10, GetItemInfo(gemLookupTable[gemID])));
 		Cryolysis3.Private.tooltips["GemButton"] = {};
 
 		local gemName = GetItemInfo(gemLookupTable[gemID]);
@@ -847,7 +851,7 @@ function module:CreateButtons()
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Left"], L["use"], gemName));
 		table.insert(Cryolysis3.Private.tooltips["GemButton"], string.format(L["%s click to %s: %s"], L["Right"], L["cast"], spellName or "Gem"));
 
-		-- Set button functions
+		-- Set button functions - use item name for WoW BC compatibility
 		Cryolysis3.db.char.buttonFunctions["GemButton"] = {};
 		Cryolysis3.db.char.buttonTypes["GemButton"] = "macrotext";
 		Cryolysis3.db.char.buttonFunctions["GemButton"].left = "/use " .. gemName;

@@ -8,3 +8,6 @@
 ------------------------------------------------------------------------------------------------------
 local L = LibStub("AceLocale-3.0"):NewLocale("Cryolysis3", "esES")
 if not L then return end
+
+L["Left Click for Config"] = "Clic izquierdo para configuración";
+L["Shift+Drag to Move"] = "Mayús+Arrastrar para mover";

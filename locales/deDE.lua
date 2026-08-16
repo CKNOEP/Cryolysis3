@@ -8,3 +8,6 @@
 ------------------------------------------------------------------------------------------------------
 local L = LibStub("AceLocale-3.0"):NewLocale("Cryolysis3", "deDE")
 if not L then return end
+
+L["Left Click for Config"] = "Linksklick für Konfiguration";
+L["Shift+Drag to Move"] = "Umschalt+Ziehen zum Verschieben";

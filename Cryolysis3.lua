@@ -11,14 +11,44 @@ Cryolysis3:SetDefaultModuleState(false);
 ------------------------------------------------------------------------------------------------------
 -- Helper function to get spell name safely from cache or GetSpellInfo
 ------------------------------------------------------------------------------------------------------
+function Cryolysis3:OpenCloseMenu(menuName)
+	-- Get the menu button
+	local menuButton = getglobal("Cryolysis3"..menuName);
+	if not menuButton then return; end
+
+	-- Get all children of the menu button
+	local children = {menuButton:GetChildren()};
+
+	-- Toggle visibility of all children
+	if children[1] and children[1]:IsVisible() then
+		-- Hide all children
+		for i, child in ipairs(children) do
+			child:Hide();
+		end
+	else
+		-- Show all children
+		for i, child in ipairs(children) do
+			child:Show();
+		end
+	end
+end
+
 function Cryolysis3:GetSpellName(spellID)
 	if not spellID then
 		return nil
 	end
+	local name
 	if self.spellCache and self.spellCache[spellID] and self.spellCache[spellID].name then
-		return self.spellCache[spellID].name
+		name = self.spellCache[spellID].name
+	else
+		name = select(1, GetSpellInfo(spellID))
 	end
-	return select(1, GetSpellInfo(spellID))
+	-- Remove rank from spell name: "Spell Name(Rank X)" -> "Spell Name"
+	-- This is needed for SecureActionButton to work in WoW BC!
+	if name then
+		name = name:match("^(.-)%(") or name
+	end
+	return name
 end
 
 
@@ -41,31 +71,48 @@ local function InitStartup()
 		Cryolysis3.db.char.hidden["Sphere"]
 	);
 	
-	-- Make main sphere draggable
+	-- Make main sphere draggable with Shift+LeftButton
 	Cryolysis3Sphere:RegisterForDrag("LeftButton");
 	Cryolysis3Sphere:RegisterForClicks("LeftButtonUp", "RightButtonUp", "MiddleButtonUp");
-	
-	-- Open the config menu when right-clicking the main sphere
-	Cryolysis3Sphere:SetAttribute("type2", "Menu");
-	Cryolysis3Sphere.Menu = function() LibStub("AceConfigDialog-3.0"):Open("Cryolysis3"); end
-	
+
+	-- Handle Shift+LeftButton drag for movement
+	Cryolysis3Sphere:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" and IsShiftKeyDown() and not Cryolysis3.db.char.lockSphere then
+			self:StartMoving();
+		end
+	end);
+	Cryolysis3Sphere:SetScript("OnMouseUp", function(self, button)
+		self:StopMovingOrSizing();
+		if button == "LeftButton" then
+			Cryolysis3:UpdateAllButtonPositions();
+		end
+	end);
+
+	-- Open the config menu when left-clicking the main sphere
+	Cryolysis3Sphere:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" and not IsShiftKeyDown() then
+			LibStub("AceConfigDialog-3.0"):Open("Cryolysis3");
+		end
+	end);
+
 	-- Handle main sphere dragging
 	Cryolysis3:AddScript("Sphere", "frame", "OnDragStart");
 	Cryolysis3:AddScript("Sphere", "frame", "OnDragStop");
-	
+
 	-- Handle main sphere tooltip
 	Cryolysis3:AddScript("Sphere", "frame", "OnEnter");
 	Cryolysis3:AddScript("Sphere", "frame", "OnLeave");
-	
+
 	-- Start tooltip data
 	Cryolysis3.Private.tooltips["Sphere"] = {};
-	
-	-- Setup custom clicks, right left out cuz it's for the menu
-	Cryolysis3:UpdateButton("Sphere", "left");
+
+	-- Setup custom clicks, left click now opens config menu
 	Cryolysis3:UpdateButton("Sphere", "middle");
 	
 	-- Start adding tooltip data
 	table.insert(Cryolysis3.Private.tooltips["Sphere"],		L["Cryolysis"]);
+	table.insert(Cryolysis3.Private.tooltips["Sphere"],		L["Left Click for Config"]);
+	table.insert(Cryolysis3.Private.tooltips["Sphere"],		L["Shift+Drag to Move"]);
 	
 	-- Set mount region thingy
 	Cryolysis3.Private.mountRegion = IsFlyableArea();

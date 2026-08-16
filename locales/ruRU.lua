@@ -40,6 +40,9 @@ L["Mount"] = "Ездовые животные";
 	L["Right click to Hearthstone to "] = "[Правый клик] для возвращения в ";
 	L["Middle click to Hearthstone to "] = "[Средний клик] для возвращения в ";
 
+L["Left Click for Config"] = "[Левый клик] для открытия настроек";
+L["Shift+Drag to Move"] = "Shift+перетащите для перемещения";
+
 L["Custom Button"] = "Пользовательские кнопки";
 	-- Custom button locales
 	L["No actions assigned to this button."] = "Нет назначенных действий для данной кнопки ";

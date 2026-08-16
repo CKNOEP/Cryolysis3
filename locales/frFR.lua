@@ -41,6 +41,9 @@ L["You have no usable mounts and no hearthstone."] = "Vous n'avez ni monture uti
 L["Right click to Hearthstone to "] = "Clic droit sur Hearthstone pour ";
 L["Middle click to Hearthstone to "] = "Clic du milieu vers Hearthstone vers ";
 
+L["Left Click for Config"] = "Clic gauche pour configuration" ;
+L["Shift+Drag to Move"] = "Maj+Glisser pour déplacer" ;
+
 L["Custom Button"] = "Bouton personnalisé" ;
 	-- Custom button locales-- Paramètres régionaux des boutons personnalisés"
 L["No actions assigned to this button."] = "Aucune action affectée à ce bouton." ;
