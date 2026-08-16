@@ -153,12 +153,18 @@ end
 do
 	-- Handle the initial scan of LoD data modules, storing in this local table so the sets metatable can find em
 	local lodmodules = {}
-	for i = 1, GetNumAddOns() do
-		local metadata = GetAddOnMetadata(i, "X-PeriodicTable-3.1-Module")
-		if metadata then
-			local name, _, _, enabled = GetAddOnInfo(i)
-			if enabled then
-				lodmodules[metadata] = name
+	if GetNumAddOns then
+		for i = 1, GetNumAddOns() do
+			if GetAddOnMetadata then
+				local metadata = GetAddOnMetadata(i, "X-PeriodicTable-3.1-Module")
+				if metadata then
+					if GetAddOnInfo then
+						local name, _, _, enabled = GetAddOnInfo(i)
+						if enabled then
+							lodmodules[metadata] = name
+						end
+					end
+				end
 			end
 		end
 	end
