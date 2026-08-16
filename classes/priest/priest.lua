@@ -156,13 +156,14 @@ function module:CreateButtons()
 
 	if (Cryolysis3:HasSpell(34433)) then
 		-- We has an Evocation, create and set up the button for it
-		Cryolysis3:CreateButton("ShadowfiendButton", UIParent, Cryolysis3.spellCache[34433].icon);
-		
+		local shadowfiendIcon = select(3, GetSpellInfo(34433)) or (Cryolysis3.spellCache[34433] and Cryolysis3.spellCache[34433].icon)
+		Cryolysis3:CreateButton("ShadowfiendButton", UIParent, shadowfiendIcon);
+
 		-- Start tooltip data
 		Cryolysis3.Private.tooltips["ShadowfiendButton"] = {};
 
 		-- Start adding tooltip data
-		table.insert(Cryolysis3.Private.tooltips["ShadowfiendButton"], Cryolysis3.spellCache[34433].name);
+		table.insert(Cryolysis3.Private.tooltips["ShadowfiendButton"], Cryolysis3:GetSpellName(34433));
 		
 		-- Set Evocation button action
 		Cryolysis3.db.char.buttonTypes["ShadowfiendButton"] = "spell";
@@ -176,15 +177,16 @@ function module:CreateButtons()
 		--UpdateShadowfiend();
 	end
 	
-	if (Cryolysis3:HasSpell(34433)) then
+	if (Cryolysis3:HasSpell(2006)) then
 		-- We has a Resurrection, create and set up the button for it
-		Cryolysis3:CreateButton("ResurrectionButton", UIParent, Cryolysis3.spellCache[2006].icon);
-		
+		local resurrectionIcon = select(3, GetSpellInfo(2006)) or (Cryolysis3.spellCache[2006] and Cryolysis3.spellCache[2006].icon)
+		Cryolysis3:CreateButton("ResurrectionButton", UIParent, resurrectionIcon);
+
 		-- Start tooltip data
 		Cryolysis3.Private.tooltips["ResurrectionButton"] = {};
 
 		-- Start adding tooltip data
-		table.insert(Cryolysis3.Private.tooltips["ResurrectionButton"], Cryolysis3.spellCache[2006].name);
+		table.insert(Cryolysis3.Private.tooltips["ResurrectionButton"], Cryolysis3:GetSpellName(2006));
 		
 		-- Set Evocation button action
 		Cryolysis3.db.char.buttonTypes["ResurrectionButton"] = "spell";
