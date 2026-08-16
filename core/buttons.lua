@@ -466,6 +466,9 @@ function Cryolysis3:SetAttribute(button, modifier, click, actionType, action)
 			if (tonumber(click) == 1) then
 				-- Left click dictates texture
 				t:SetTexture(texture);
+				-- Force the texture to be exactly 22x22
+				t:SetWidth(22);
+				t:SetHeight(22);
 			end
 		end
 		
