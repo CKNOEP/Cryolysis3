@@ -507,18 +507,18 @@ function Cryolysis3:PrepareButton(menuType, name, buttonType, title, left, right
 
 		if (Cryolysis3:HasSpell(left)) then
 			Cryolysis3.db.char.buttonFunctions[menuType..name].left = left;
-			
+
 			if (type(left) == "number") then
-				left = Cryolysis3.spellCache[left].name;
+				left = Cryolysis3:GetSpellName(left) or tostring(left);
 			end
 			table.insert(tooltip, string.format(L["%s click to %s: %s"], L["Left"],	action, left));
 		end
-		
+
 		if (Cryolysis3:HasSpell(right)) then
 			Cryolysis3.db.char.buttonFunctions[menuType..name].right = right;
-			
+
 			if (type(right) == "number") then
-				right = Cryolysis3.spellCache[right].name;
+				right = Cryolysis3:GetSpellName(right) or tostring(right);
 			end
 			table.insert(tooltip, string.format(L["%s click to %s: %s"], L["Right"], action, right));
 		end
