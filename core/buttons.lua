@@ -525,9 +525,9 @@ function Cryolysis3:PrepareButton(menuType, name, buttonType, title, left, right
 		
 		if (Cryolysis3:HasSpell(middle)) then
 			Cryolysis3.db.char.buttonFunctions[menuType..name].middle = middle;
-			
+
 			if (type(middle) == "number") then
-				middle = Cryolysis3.spellCache[middle].name;
+				middle = Cryolysis3:GetSpellName(middle) or tostring(middle);
 			end
 			table.insert(tooltip, string.format(L["%s click to %s: %s"], L["Middle"], action, middle));
 		end
